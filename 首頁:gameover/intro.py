@@ -9,6 +9,9 @@ pygame.mixer.init()
 # =============================================================================
 # 基礎設定
 
+# track time
+clock = pygame.time.Clock()
+
 # 視窗大小設定
 display_width   = 600
 display_height  = 600
@@ -93,7 +96,8 @@ def intro():
         message_display("Exit"  , 38 , menu2_x + menu_width / 2 , menu2_y + menu_height / 2)
 
         pygame.display.update()
-        # clock.tick(50)
+        # track time
+        clock.tick(50)
 def text_objects(text,font):
     textSurface = font.render(text,True,white)
     return textSurface,textSurface.get_rect()

@@ -9,6 +9,9 @@ pygame.mixer.init()
 # =============================================================================
 # 基礎設定
 
+# track time
+clock = pygame.time.Clock()
+
 # 視窗大小設定
 display_width   = 600
 display_height  = 600
@@ -42,11 +45,11 @@ def showGameOverScreen():
     gameRect.midtop = (display_width / 2, 20)
     overRect.midtop = (display_width / 2, 100)  
   
-    gameDisplay.blit(gameSurf, gameRect)  
-    gameDisplay.blit(overSurf, overRect)  
-    drawPressKeyMsg()  
-    pygame.display.update()  
-    pygame.time.wait(500)  
+    gameDisplay.blit(gameSurf, gameRect)
+    gameDisplay.blit(overSurf, overRect)
+    drawPressKeyMsg()
+    pygame.display.update()
+    pygame.time.wait(500)
     checkForKeyPress()  # clear out any key presses in the event queue  
   
     while True:  
@@ -60,8 +63,8 @@ def drawPressKeyMsg():
     gameDisplay.blit(pressKeySurf, pressKeyRect)
 def checkForKeyPress():  
     if len(pygame.event.get(QUIT)) > 0:  
-        pygame.quit()  
-        sys.exit()  
+        pygame.quit()
+        sys.exit()
     keyUpEvents = pygame.event.get(KEYUP)  
     if len(keyUpEvents) == 0:  
         return None  

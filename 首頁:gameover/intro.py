@@ -1,6 +1,8 @@
 import pygame
 import time
 import random 
+import sys
+from pygame.locals import *  
 
 pygame.init()
 pygame.mixer.init()
@@ -100,6 +102,7 @@ def message_display(text,size,x,y):
     text_surface , text_rectangle = text_objects(text,font)
     text_rectangle.center = (x,y)
     gameDisplay.blit(text_surface , text_rectangle)
-
+# =============================================================================
 
 intro()
+

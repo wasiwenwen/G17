@@ -55,25 +55,26 @@ def showGameOverScreen():
     while True:  
         if checkForKeyPress():  
             pygame.event.get()  # clear event queue
-			
+            return  
 def drawPressKeyMsg():
     FONT1 = pygame.font.Font('Star_Jedi_Rounded.ttf', 14)  
     pressKeySurf = FONT1.render('press a key to play.', True, white)  
     pressKeyRect = pressKeySurf.get_rect()  
     pressKeyRect.topleft = (display_width - 200, display_height - 30)  
     gameDisplay.blit(pressKeySurf, pressKeyRect)
-	
-	
+
 def checkForKeyPress():  
     if len(pygame.event.get(QUIT)) > 0:  
-        pygame.quit()
-        sys.exit()
+        terminate()  
     keyUpEvents = pygame.event.get(KEYUP)  
     if len(keyUpEvents) == 0:  
-        return None
+        return None  
     if keyUpEvents[0].key == K_ESCAPE:  
-        pygame.quit()  
-        sys.exit()  
+        terminate()  
     return keyUpEvents[0].key
+
+def terminate():  
+    pygame.quit()  
+    sys.exit()  
 # =============================================================================
 

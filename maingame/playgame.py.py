@@ -81,7 +81,6 @@ def car(x,y):
 	
 def main():	 
 	global SnakespeedCLOCK, gameDisplay, BASICFONT	
-  
 	pygame.init()  
 	SnakespeedCLOCK = pygame.time.Clock()  
 	gameDisplay = pygame.display.set_mode((display_height, display_width))
@@ -94,13 +93,13 @@ def main():
 		runGame()  	
 		showGameOverScreen()
 
-#主遊戲迴圈    
+#主遊戲迴圈
 def runGame():
 	
 	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
 	y = (display_height * 0.8)
 
-	#設定汽車位移    
+	#設定汽車位移
 	x_change = 0
 
 	#設定障礙物
@@ -117,7 +116,6 @@ def runGame():
 	bg_y1 = 0
 	bg_y2 = - display_height	
 
-	
 	#預設汽車沒有撞到    
 	# gameExit = False
 

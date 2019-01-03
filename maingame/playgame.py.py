@@ -15,15 +15,15 @@ red = (255, 0, 0)
 gray    = (60,60,60)
 green   = (108,248,101)
 blue    = (99,148,248)
+
 #設定汽車寬度(查圖片像素)
-car_height = 40
-car_width = 125
+car_height = 75
+car_width = 135
 
 #設定星球大小
 planet_height = 75
-planet_width = 75
-blue_planet_width = 120
-yellow_planet_width = 135
+planet_width = 135
+
 
 #設定icon
 pygame.display.set_icon(menu_UFO)
@@ -31,61 +31,61 @@ pygame.display.set_icon(menu_UFO)
 
 
 #設定跑道x軸大小
-runway = [0, display_width/2 - planet_width/2, display_width - planet_width]
+runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/2, display_width/6 * 5 - planet_width/2]
 
 #讀入飛碟圖片
 carImg = pygame.image.load("ufo.png")
-carImg = pygame.transform.scale(carImg,(car_width, car_height))
+# carImg = pygame.transform.scale(carImg,(car_width, car_height))
 
 #讀入星球圖片
 Picture = []
 g0 = pygame.image.load("g0.png")
-g0 = pygame.transform.scale(g0,(planet_width, planet_height))
+# g0 = pygame.transform.scale(g0,(planet_width, planet_height))
 Picture.append(g0)
 g1 = pygame.image.load("g1.png")
-g1 = pygame.transform.scale(g1,(planet_width, planet_height))
+# g1 = pygame.transform.scale(g1,(planet_width, planet_height))
 Picture.append(g1)
 g2 = pygame.image.load("g2.png")
-g2 = pygame.transform.scale(g2,(planet_width, planet_height))
+# g2 = pygame.transform.scale(g2,(planet_width, planet_height))
 Picture.append(g2)
 g3 = pygame.image.load("g3.png")
-g3 = pygame.transform.scale(g3,(planet_width, planet_height))
+# g3 = pygame.transform.scale(g3,(planet_width, planet_height))
 Picture.append(g3)
 r0 = pygame.image.load("r0.png")
-r0 = pygame.transform.scale(r0,(planet_width, planet_height))
+# r0 = pygame.transform.scale(r0,(planet_width, planet_height))
 Picture.append(r0)
 r1 = pygame.image.load("r1.png")
-r1 = pygame.transform.scale(r1,(planet_width, planet_height))
+# r1 = pygame.transform.scale(r1,(planet_width, planet_height))
 Picture.append(r1)
 r2 = pygame.image.load("r2.png")
-r2 = pygame.transform.scale(r2,(planet_width, planet_height))
+# r2 = pygame.transform.scale(r2,(planet_width, planet_height))
 Picture.append(r2)
 r3 = pygame.image.load("r3.png")
-r3 = pygame.transform.scale(r3,(planet_width, planet_height))
+# r3 = pygame.transform.scale(r3,(planet_width, planet_height))
 Picture.append(r3)
 y0 = pygame.image.load("y0.png")
-y0 = pygame.transform.scale(y0,(yellow_planet_width, planet_height))
+# y0 = pygame.transform.scale(y0,(yellow_planet_width, planet_height))
 Picture.append(y0)
 y1 = pygame.image.load("y1.png")
-y1 = pygame.transform.scale(y1,(yellow_planet_width, planet_height))
+# y1 = pygame.transform.scale(y1,(yellow_planet_width, planet_height))
 Picture.append(y1)
 y2 = pygame.image.load("y2.png")
-y2 = pygame.transform.scale(y2,(yellow_planet_width, planet_height))
+# y2 = pygame.transform.scale(y2,(yellow_planet_width, planet_height))
 Picture.append(y2)
 y3 = pygame.image.load("y3.png")
-y3 = pygame.transform.scale(y3,(yellow_planet_width, planet_height))
+# y3 = pygame.transform.scale(y3,(yellow_planet_width, planet_height))
 Picture.append(y3)
 b0 = pygame.image.load("b0.png")
-b0 = pygame.transform.scale(b0,(blue_planet_width, planet_height))
+# b0 = pygame.transform.scale(b0,(blue_planet_width, planet_height))
 Picture.append(b0)
 b1 = pygame.image.load("b1.png")
-b1 = pygame.transform.scale(b1,(blue_planet_width, planet_height))
+# b1 = pygame.transform.scale(b1,(blue_planet_width, planet_height))
 Picture.append(b1)
 b2 = pygame.image.load("b2.png")
-b2 = pygame.transform.scale(b2,(blue_planet_width, planet_height))
+# b2 = pygame.transform.scale(b2,(blue_planet_width, planet_height))
 Picture.append(b2)
 b3 = pygame.image.load("b3.png")
-b3 = pygame.transform.scale(b3,(blue_planet_width, planet_height))
+# b3 = pygame.transform.scale(b3,(blue_planet_width, planet_height))
 Picture.append(b3)
 
 
@@ -98,9 +98,8 @@ def things(thingx, thingy, word):
 	
 #設定汽車位置，注意：越右邊X越大，越上面Y越小，視窗的左上方是(0,0)
 def car(x,y):
-	gameDisplay.blit(carImg, (x,y))
+	gameDisplay.blit(carImg, (x,y))	
 
-	
 def main():	 
 	global SnakespeedCLOCK, gameDisplay, BASICFONT	
 	pygame.init()  
@@ -117,9 +116,8 @@ def main():
 
 #主遊戲迴圈
 def runGame():
-	
 	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
-	y = (display_height * 0.9)
+	y = (display_height * 0.8)
 
 	#設定汽車位移
 	x_change = 0
@@ -128,6 +126,7 @@ def runGame():
 	thing_startx = random.choice(runway) #X座標從跑道中任選一條
 	thing_starty = -600 #因為如果從零開始的話，0會出現在畫面上
 	thing_speed = 5
+	max_thing_speed = 15
 	word = random.choice(Picture)
 	word2 = word
 	
@@ -172,11 +171,11 @@ def runGame():
 		
 		#things(thingx, thingy, thingw, thingh, color)
 		things(thing_startx, thing_starty, word2)
-		thing_starty += thing_speed 
+		thing_starty += thing_speed
+
 		
 		#設定汽車的位置
 		car(x,y)
-		
 		
 		#判斷車子是否超過畫面限制(crash)
 		if x > display_width - car_width or x < 0: #要剪掉car_width是因為，電腦是依據圖片「左上角」的點做判斷
@@ -184,7 +183,8 @@ def runGame():
   
 		#如果障礙物已超過畫面，就要再出現下一個障礙物
 		if thing_starty > display_height : #注意，Y越下方越大
-			thing_speed += 0.5  #用來加速
+			if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
+			else: thing_speed = max_thing_speed	
 			thing_starty = 0 - 30
 			thing_startx = random.choice(runway)
 			word = random.choice(Picture)

@@ -24,10 +24,8 @@ car_width = 135
 planet_height = 75
 planet_width = 135
 
-
 #設定icon
 pygame.display.set_icon(menu_UFO)
-
 
 
 #設定跑道x軸大小
@@ -89,8 +87,6 @@ b3 = pygame.image.load("b3.png")
 Picture.append(b3)
 
 
-
-
 #建立障礙物
 def things(thingx, thingy, word):
 	gameDisplay.blit(word, (thingx, thingy))
@@ -124,9 +120,9 @@ def runGame():
 
 	#設定障礙物
 	thing_startx = random.choice(runway) #X座標從跑道中任選一條
-	thing_starty = -600 #因為如果從零開始的話，0會出現在畫面上
+	thing_starty = - display_height #因為如果從零開始的話，0會出現在畫面上
 	thing_speed = 5
-	max_thing_speed = 15
+	max_thing_speed = 7
 	word = random.choice(Picture)
 	word2 = word
 	
@@ -137,8 +133,6 @@ def runGame():
 	bg_y1 = 0
 	bg_y2 = - display_height	
 
-	#預設汽車沒有撞到    
-	# gameExit = False
 
 	#while迴圈
 	while True:
@@ -149,17 +143,17 @@ def runGame():
 		
 			#設定按按鍵時汽車會位移
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
-					x_change = -10
-				elif event.key == pygame.K_RIGHT:
-					x_change = 10
+				if event.key == pygame.K_LEFT and (x != display_width/6 - planet_width/2):
+					x -= display_width/3
+				elif event.key == pygame.K_RIGHT and (x != display_width/6 * 5 - planet_width/2):
+					x += display_width/3
 			
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 					x_change = 0
 		
 		#加上x的變化值
-		x += x_change
+		# x += x_change
 		
 		#設定背景顏色，需特別注意，此條為將螢幕刷成同一顏色，若物件的函數寫在這之前，就會被刷成同一顏色而無法辨認
 		gameDisplay.fill(black)
@@ -178,14 +172,14 @@ def runGame():
 		car(x,y)
 		
 		#判斷車子是否超過畫面限制(crash)
-		if x > display_width - car_width or x < 0: #要剪掉car_width是因為，電腦是依據圖片「左上角」的點做判斷
-			return
+		# if x > display_width - car_width or x < 0: #要剪掉car_width是因為，電腦是依據圖片「左上角」的點做判斷
+			# return
   
 		#如果障礙物已超過畫面，就要再出現下一個障礙物
-		if thing_starty > display_height : #注意，Y越下方越大
+		if thing_starty > display_height: #注意，Y越下方越大
 			if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 			else: thing_speed = max_thing_speed	
-			thing_starty = 0 - 30
+			thing_starty = 0 - planet_height
 			thing_startx = random.choice(runway)
 			word = random.choice(Picture)
 			word2 = word
@@ -194,10 +188,10 @@ def runGame():
 		bg_y1 += bg_speed
 		bg_y2 += bg_speed
 		if bg_y1 >= display_height:
-			bg_y1 = -600
+			bg_y1 = - display_height
 			
 		if bg_y2 >= display_height:
-			bg_y2 = -600
+			bg_y2 = - display_height
 		pygame.display.update() #pygame.display.flip()也可以
 		
 		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字

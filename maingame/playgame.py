@@ -9,12 +9,12 @@ display_width = 600
 display_height = 600
 
 #設定要使用的顏色的RGB
-black = (0, 0, 0)
-white = (255, 255, 255)
-red = (255, 0, 0)
-gray    = (60,60,60)
-green   = (108,248,101)
-blue    = (99,148,248)
+black	= (0, 0, 0)
+white	= (255, 255, 255)
+red		= (255, 0, 0)
+gray	= (60,60,60)
+green	= (108,248,101)
+blue	= (99,148,248)
 
 #設定汽車寬度(查圖片像素)
 car_height = 75
@@ -118,9 +118,9 @@ def runGame():
 	#設定汽車位移
 	x_change = 0
 
-	#設定障礙物
+	#設定第一個障礙物
 	thing_startx = random.choice(runway) #X座標從跑道中任選一條
-	thing_starty = - display_height #因為如果從零開始的話，0會出現在畫面上
+	thing_starty = - planet_height #因為如果從零開始的話，0會出現在畫面上
 	thing_speed = 5
 	max_thing_speed = 7
 	word = random.choice(Picture)
@@ -132,7 +132,6 @@ def runGame():
 	bg_x2 = 0
 	bg_y1 = 0
 	bg_y2 = - display_height	
-
 
 	#while迴圈
 	while True:
@@ -164,7 +163,7 @@ def runGame():
 	
 		
 		#things(thingx, thingy, thingw, thingh, color)
-		things(thing_startx, thing_starty, word2)
+		things(thing_startx, thing_starty, word)
 		thing_starty += thing_speed
 
 		
@@ -173,7 +172,7 @@ def runGame():
 		
 		#判斷車子是否超過畫面限制(crash)
 		# if x > display_width - car_width or x < 0: #要剪掉car_width是因為，電腦是依據圖片「左上角」的點做判斷
-			# return
+			# return #GAMOVER
   
 		#如果障礙物已超過畫面，就要再出現下一個障礙物
 		if thing_starty > display_height: #注意，Y越下方越大
@@ -183,7 +182,8 @@ def runGame():
 			thing_startx = random.choice(runway)
 			word = random.choice(Picture)
 			word2 = word
-		
+			# print(Picture.index(word)) #用index可以找到目前是第幾張圖片，就可以分辨是正確還是錯誤的圖片了
+			
 		#讓背景動起來(2/2) - 改變位置參數
 		bg_y1 += bg_speed
 		bg_y2 += bg_speed

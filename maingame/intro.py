@@ -43,10 +43,13 @@ def intro():
 	# 音樂
 	pygame.mixer.music.play(-1)
 	# 首頁按鈕配置
-	menu1_x     = 150
+	menu1_x     = 100
 	menu1_y     = 400
-	menu2_x     = 350
+	menu2_x     = 400
 	menu2_y     = 400
+	menu3_x     = 250
+	menu3_y     = 400
+
 	menu_width  = 100
 	menu_height = 50
 	# 背景
@@ -60,6 +63,7 @@ def intro():
 	# ------------------------------------------------------------------------
 	# 首頁迴圈
 	while intro:
+		
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -76,6 +80,7 @@ def intro():
 		message_display("stroop ufo" , 60 , display_width / 2 , display_height / 2 + 30)
 		pygame.draw.rect(gameDisplay,blue,  (menu1_x,menu1_y,menu_width,menu_height))
 		pygame.draw.rect(gameDisplay,red,   (menu2_x,menu2_y,menu_width,menu_height))
+		pygame.draw.rect(gameDisplay,green,   (menu3_x,menu3_y,menu_width,menu_height))
 		
 		# 碰到的時候變顏色
 		mouse = pygame.mouse.get_pos()
@@ -89,9 +94,14 @@ def intro():
 			if click[0] == 1:
 				pygame.quit()
 				quit()
+		if (menu3_x < mouse[0] < menu3_x + menu_width) and (menu3_y < mouse[1] < menu3_y + menu_height):
+			pygame.draw.rect(gameDisplay,gray,(menu3_x,menu3_y,menu_width,menu_height))
+			if click[0] == 1:
+				high()
 
 		message_display("Go"    , 38 , menu1_x + menu_width / 2 , menu1_y + menu_height / 2)
 		message_display("Exit"  , 38 , menu2_x + menu_width / 2 , menu2_y + menu_height / 2)
+		message_display("high"  , 38 , menu3_x + menu_width / 2 , menu3_y + menu_height / 2)
 
 		pygame.display.update()
 		# track time
@@ -104,4 +114,25 @@ def message_display(text,size,x,y):
 	text_surface , text_rectangle = text_objects(text,font)
 	text_rectangle.center = (x,y)
 	gameDisplay.blit(text_surface , text_rectangle)
+def high():
+	import csv
+	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	csv1 = csv.DictReader(fh1) 
+	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
+	list = []
+	for aline in csv1:
+		list1 = [aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip()]
+		list.append(list1)
+	fh1.close()
+	gameDisplay.fill(black)
+	message_display(list[0][0], 38 , 100,100)
+	message_display(list[0][1], 38 , 200,100)
+	message_display(list[0][2], 38 , 400,100)
+	message_display(list[1][0], 38 , 100,200)
+	message_display(list[1][1], 38 , 200,200)
+	message_display(list[1][2], 38 , 400,200)
+	message_display(list[2][0], 38 , 100,300)
+	message_display(list[2][1], 38 , 200,300)
+	message_display(list[2][2], 38 , 400,300)
+	# pygame.display.update()
 # =============================================================================

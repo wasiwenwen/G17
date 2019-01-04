@@ -27,14 +27,18 @@ class TextBox(pygame.sprite.Sprite):
 
 
 screen = pygame.display.set_mode([640, 480])
-textBox = TextBox()
-shiftDown = False
-textBox.rect.center = [300, 240]
 
-running = True
+shiftDown = False
+
+
+
 def get_user():
     global running,shiftDown,screen
+    textBox = TextBox()
+    textBox.rect.center = [300, 240]
+    running = True
     while running:
+
         black   = (0, 0, 0)
         screen.fill(black)
         screen.blit(textBox.image, textBox.rect)
@@ -60,4 +64,3 @@ def get_user():
                         print (textBox.text)
                     running = False
     return (textBox.text)
-# pygame.quit()

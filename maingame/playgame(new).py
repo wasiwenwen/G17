@@ -170,7 +170,16 @@ def runGame():
 		background_image = pygame.transform.scale(background_image,(display_height, display_width))
 		gameDisplay.blit(background_image,(bg_x1,bg_y1))
 		gameDisplay.blit(background_image,(bg_x2,bg_y2))
-	
+		# scoresreen
+		scoreFont = pygame.font.Font('Starjhol.ttf', 22)
+		scoreSurf = scoreFont.render('your score:'+str(score), True, white)
+		highscoreSurf = scoreFont.render('high score:100000', True, white)
+		scoreRect = scoreSurf.get_rect()
+		highscoreRect = highscoreSurf.get_rect()
+		scoreRect.midtop = (display_width - 170, 550)
+		highscoreRect.midtop = (150, 550) 
+		gameDisplay.blit(scoreSurf, scoreRect)
+		gameDisplay.blit(highscoreSurf, highscoreRect)
 		
 		#things(thingx, thingy, thingw, thingh, color)
 		things(thing_startx, thing_starty, word)

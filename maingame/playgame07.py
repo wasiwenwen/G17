@@ -320,6 +320,7 @@ def runGame():
 		if checkTrue_C == True:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
 				# eat(x, y)
+				channel1.play(pygame.mixer.Sound("eat.wav"))
 				thing_C_startx += 10000
 				score += 100
 				pygame.display.update()

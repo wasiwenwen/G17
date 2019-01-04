@@ -2,7 +2,10 @@ import pygame, time, random, sys
 from intro import *
 from pygame.locals import *  
 from GAMEOVER import *
+from get_user import *
 
+# 
+user = ""
 
 #設定視窗大小
 display_width = 600
@@ -115,6 +118,8 @@ def main():
 	
 	#顯示首頁
 	intro()
+	user = get_user()
+	print(user)
 	while True:  
 		runGame()   
 		showGameOverScreen()

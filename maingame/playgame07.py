@@ -104,7 +104,7 @@ def car(x,y):
 	# pygame.mixer.music.play(0)
 
 def highscore(count):
-	font = pygame.font.SysFont(None,50)
+	font = pygame.font.SysFont(None, 50)
 	text = font.render("Score : "+str(count),True,white)
 	gameDisplay.blit(text,(0,0))    
 	
@@ -135,7 +135,7 @@ def runGame():
 	pygame.mixer.music.play(-1)
 	
 	#設定分數
-	score = 0
+	score = 900
 
 	#設定初始值
 	thing_speed = 5
@@ -286,7 +286,7 @@ def runGame():
 				pygame.display.update()
 				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 				else: thing_speed = max_thing_speed 
-				thing_starty = 0 - thing_D_starty - PlanetRange 
+				thing_starty = thing_D_starty - PlanetRange 
 				thing_startx = random.choice(runway)
 				word = random.choice(Picture)
 			elif thing_starty > display_height:
@@ -301,7 +301,7 @@ def runGame():
 				pygame.display.update()
 				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 				else: thing_speed = max_thing_speed 
-				thing_A_starty = 0 - thing_starty - PlanetRange 
+				thing_A_starty = thing_starty - PlanetRange 
 				thing_A_startx = random.choice(runway)
 				word_A = random.choice(Picture)
 			elif thing_A_starty > display_height:
@@ -316,7 +316,7 @@ def runGame():
 				pygame.display.update()
 				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 				else: thing_speed = max_thing_speed 
-				thing_B_starty = 0 - thing_A_starty - PlanetRange 
+				thing_B_starty = thing_A_starty - PlanetRange 
 				thing_B_startx = random.choice(runway)
 				word_B = random.choice(Picture)
 			elif thing_B_starty > display_height:
@@ -331,7 +331,7 @@ def runGame():
 				pygame.display.update()
 				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 				else: thing_speed = max_thing_speed 
-				thing_C_starty = 0 - thing_B_starty - PlanetRange 
+				thing_C_starty = thing_B_starty - PlanetRange 
 				thing_C_startx = random.choice(runway)
 				word_C = random.choice(Picture)
 			elif thing_C_starty > display_height:
@@ -346,7 +346,7 @@ def runGame():
 				pygame.display.update()
 				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
 				else: thing_speed = max_thing_speed 
-				thing_D_starty = 0 - thing_C_starty - PlanetRange 
+				thing_D_starty = thing_C_starty - PlanetRange 
 				thing_D_startx = random.choice(runway)
 				word_D = random.choice(Picture)
 			elif thing_D_starty > display_height:

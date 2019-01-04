@@ -96,10 +96,10 @@ def things(thingx, thingy, word):
 def car(x,y):
     gameDisplay.blit(carImg, (x,y)) 
 
-def eat(x, y):
-    pygame.mixer.music.load("eat.mp3")
-    pygame.mixer.music.play(0)
-
+# def eat(x, y):
+#     pygame.mixer.music.pause()
+#     pygame.mixer.music.load("eat.mp3")
+#     pygame.mixer.music.unpause()
 def highscore(count):
     font = pygame.font.SysFont(None,50)
     text = font.render("Score : "+str(count),True,white)
@@ -112,19 +112,25 @@ def main():
     gameDisplay = pygame.display.set_mode((display_height, display_width))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)  
     pygame.display.set_caption('Stroop UFO')
+
     
     #顯示首頁
     intro()
     while True:  
-        runGame()   
+        runGame()
         showGameOverScreen()
 
 #主遊戲迴圈
 def runGame():
+
+    channel1=pygame.mixer.Channel(0)
+
+
+    pygame.mixer.music.load("for final.mp3")
+    pygame.mixer.music.play(-1)  
     x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
     y = (display_height * 0.8)
-    pygame.mixer.music.load("for final.mp3")
-    pygame.mixer.music.play(-1)
+    
     #設定分數
     score = 0
 
@@ -197,7 +203,7 @@ def runGame():
         #check eat 
         if checkTrue == True:
             if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
-                eat(x, y)
+                channel1.play(pygame.mixer.Sound("eat.wav"))
                 thing_startx += 10000
                 score += 100
                 pygame.display.update()

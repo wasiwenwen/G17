@@ -98,8 +98,8 @@ def car(x,y):
 
 #發生吃對的情形(聲音檔還沒找)
 def eat(x, y):
-    crash_sound = pygame.mixer.Sound("C:\\Users\\Timmy Kao\\Desktop\\car_game-master\\music\\crash.wav")
-    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.load("eat.mp3")
+    pygame.mixer.music.play(0)
 	
 def crash(x,y):
 	message_display("You Crashed",115,display_width/2,display_height/2)
@@ -139,11 +139,14 @@ def runGame():
 	thing_starty = - display_height #因為如果從零開始的話，0會出現在畫面上
 	thing_speed = 5
 	max_thing_speed = 7
+	
 	checkTrue = False
 	word = random.choice(Picture)
 	word2 = word
+	
 	if (Picture.index(word) == 0) or (Picture.index(word) == 4) or (Picture.index(word) == 8) or (Picture.index(word) == 12):
 		checkTrue = True
+		
 	# 讓背景動起來(1/2) - 設定背景的位置參數初始值
 	bg_speed = 3
 	bg_x1 = 0
@@ -201,11 +204,13 @@ def runGame():
 				thing_startx += 10000
 				pygame.display.update()
 				clock.tick(60)
+				
 		#check crash
 		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue == False:
 			if x == thing_startx:
-				crash(x, y)
-				pygame.display.update() 
+				return
+				# crash(x, y)
+				# pygame.display.update() 
 		
 		if thing_starty > display_height and checkTrue == False: #注意，Y越下方越大
 			if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
@@ -217,8 +222,10 @@ def runGame():
 			checkTrue = False
 			if (Picture.index(word) == 0) or (Picture.index(word) == 4) or (Picture.index(word) == 8) or (Picture.index(word) == 12):
 				checkTrue = True
+				
 		elif thing_starty > display_height and checkTrue == True:
-			crash(x,y)
+			# crash(x,y)
+			return
 		
 		#讓背景動起來(2/2) - 改變位置參數
 		bg_y1 += bg_speed
@@ -246,7 +253,6 @@ def runGame():
 				crash(x, y)
 				pygame.display.update()
 
-		#check miss
 		pygame.display.update()
 		clock.tick(60)
 		

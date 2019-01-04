@@ -58,7 +58,7 @@ def break_record():
 				his_list[1] = [2,user,score]
 				
 		else:
-			his_list[2] = [(3,user,score)]
+			his_list[2] = [3,user,score]
 
 	with open('his_high.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
 		# 建立 CSV 檔寫入器

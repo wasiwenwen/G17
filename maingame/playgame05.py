@@ -237,7 +237,7 @@ def runGame():
         
                 
         #設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
-        SnakespeedCLOCK.tick(50)
+        SnakespeedCLOCK.tick()
         pygame.display.update()
 
         

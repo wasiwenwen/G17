@@ -126,7 +126,7 @@ def runGame():
 	thing_startx = random.choice(runway) #X座標從跑道中任選一條
 	thing_starty = -600 #因為如果從零開始的話，0會出現在畫面上
 	thing_speed = 5
-	max_thing_speed = 15
+	max_thing_speed = 10
 	word = random.choice(Picture)
 	word2 = word
 	

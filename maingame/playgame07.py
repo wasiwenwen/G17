@@ -96,9 +96,9 @@ def things(thingx, thingy, word):
 def car(x,y):
 	gameDisplay.blit(carImg, (x,y)) 
 
-def eat(x, y):
-	pygame.mixer.music.load("eat.mp3")
-	pygame.mixer.music.play(0)
+# def eat(x, y):
+	# pygame.mixer.music.load("eat.mp3")
+	# pygame.mixer.music.play(0)
 
 def highscore(count):
 	font = pygame.font.SysFont(None,50)
@@ -123,7 +123,12 @@ def main():
 def runGame():
 	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
 	y = (display_height * 0.8)
-
+	
+	#設定音樂
+	channel1 = pygame.mixer.Channel(0)
+	pygame.mixer.music.load("for final.mp3")
+	pygame.mixer.music.play(-1)
+	
 	#設定分數
 	score = 0
 
@@ -269,7 +274,8 @@ def runGame():
 		#check eat 
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
-				eat(x, y)
+				# eat(x, y)
+				channel1.play(pygame.mixer.Sound("eat.wav"))
 				thing_startx += 10000
 				score += 100
 				pygame.display.update()
@@ -283,7 +289,8 @@ def runGame():
 				
 		if checkTrue_A == True:
 			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
-				eat(x, y)
+				# eat(x, y)
+				channel1.play(pygame.mixer.Sound("eat.wav"))				
 				thing_A_startx += 10000
 				score += 100
 				pygame.display.update()
@@ -297,7 +304,8 @@ def runGame():
 				
 		if checkTrue_B == True:
 			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
-				eat(x, y)
+				# eat(x, y)
+				channel1.play(pygame.mixer.Sound("eat.wav"))				
 				thing_B_startx += 10000
 				score += 100
 				pygame.display.update()
@@ -311,7 +319,7 @@ def runGame():
 
 		if checkTrue_C == True:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
-				eat(x, y)
+				# eat(x, y)
 				thing_C_startx += 10000
 				score += 100
 				pygame.display.update()
@@ -325,7 +333,8 @@ def runGame():
 				
 		if checkTrue_D == True:
 			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
-				eat(x, y)
+				# eat(x, y)
+				channel1.play(pygame.mixer.Sound("eat.wav"))				
 				thing_D_startx += 10000
 				score += 100
 				pygame.display.update()

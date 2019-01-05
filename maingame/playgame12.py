@@ -142,7 +142,10 @@ b2 = pygame.image.load("b2.png")
 Picture.append(b2)
 b3 = pygame.image.load("b3.png")
 Picture.append(b3)
-
+Picture.append(g0)
+Picture.append(r0)
+Picture.append(y0)
+Picture.append(b0)
 #最高分與排行榜
 his_high_score = his_high()
 his_list = his_high_3()
@@ -172,7 +175,7 @@ def set_things(planet_height, PlanetRange):
 #檢查物品要吃與否	
 def check_correct(word1):
 	global Picture
-	if (Picture.index(word1) == 0) or (Picture.index(word1) == 4) or (Picture.index(word1) == 8) or (Picture.index(word1) == 12):
+	if (Picture.index(word1) == 0) or (Picture.index(word1) == 4) or (Picture.index(word1) == 8) or (Picture.index(word1) == 12) or (16 <=(Picture.index(word1)) <= 19):
 		return True
 	else:
 		return False
@@ -338,34 +341,35 @@ def runGame():
 		car(x,y, score)
 		
 		#check_eat
+		deadline = display_height - car_height
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
 				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
-			elif thing_starty > display_height - car_height:
+			elif thing_starty > deadline:
 				return
 			
 		if checkTrue_A == True:
 			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
 				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
-			elif thing_A_starty > display_height - car_height:
+			elif thing_A_starty > deadline:
 				return
 			
 		if checkTrue_B == True:
 			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
 				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
-			elif thing_B_starty > display_height - car_height:
+			elif thing_B_starty > deadline:
 				return
 			
 		if checkTrue_C == True:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
 				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
-			elif thing_C_starty > display_height - car_height:
+			elif thing_C_starty > deadline:
 				return
 			
 		if checkTrue_D == True:
 			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
 				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
-			elif thing_D_starty > display_height - car_height:
+			elif thing_D_starty > deadline:
 				return
 
 		# 是否超越歷史紀錄

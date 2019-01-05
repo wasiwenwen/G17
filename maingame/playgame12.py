@@ -233,7 +233,7 @@ def runGame():
 	pygame.mixer.music.play(-1)
 	
 	#設定分數
-	score = 1200
+	score = 0
 
 	#設定初始值
 	thing_speed = 5
@@ -304,17 +304,17 @@ def runGame():
 			PlanetRange = 500
 			thing_speed = 5 #用來加速 
 
-		elif 300 <= score < 1000:
+		elif 300 <= score < 500:
 			PlanetRange = 400
 			thing_speed = 6 #用來加速 
 
 			
-		elif 1000 <= score < 1500:
+		elif 500 <= score < 1000:
 			PlanetRange = 300
 			thing_speed = 6.5 #用來加速 
 
 			
-		elif score >= 1500:
+		elif score >= 1000:
 			PlanetRange = 200
 			thing_speed = 7 #用來加速 
 

@@ -338,31 +338,31 @@ def runGame():
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
 				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
-			elif thing_starty > display_height:
+			elif thing_starty > display_height - car_height:
 				return
 			
 		if checkTrue_A == True:
 			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
 				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
-			elif thing_A_starty > display_height:
+			elif thing_A_starty > display_height - car_height:
 				return
 			
 		if checkTrue_B == True:
 			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
 				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
-			elif thing_B_starty > display_height:
+			elif thing_B_starty > display_height - car_height:
 				return
 			
 		if checkTrue_C == True:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
 				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
-			elif thing_C_starty > display_height:
+			elif thing_C_starty > display_height - car_height:
 				return
 			
 		if checkTrue_D == True:
 			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
 				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
-			elif thing_D_starty > display_height:
+			elif thing_D_starty > display_height - car_height:
 				return
 
 		# 是否超越歷史紀錄

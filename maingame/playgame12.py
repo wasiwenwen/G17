@@ -234,7 +234,7 @@ def runGame():
 	y = (display_height * 0.8)
 	
 
-	
+	channel1 = pygame.mixer.Channel(0)
 	#設定分數
 	score = 0
 

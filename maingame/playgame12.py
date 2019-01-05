@@ -314,12 +314,12 @@ def runGame():
 			
 		elif 500 <= score < 1000:
 			PlanetRange = 300
-			thing_speed = 6.5 #用來加速 
+			thing_speed = 7 #用來加速 
 
 			
 		elif score >= 1000:
 			PlanetRange = 200
-			thing_speed = 7 #用來加速 
+			thing_speed = 8 #用來加速 
 
 
 		#things(thingx, thingy, word)

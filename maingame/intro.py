@@ -33,7 +33,6 @@ pygame.mixer.music.load("starwar.mp3")
 # 1.首頁/icon
 menu_UFO    = pygame.image.load("menu_ufo.png")
 menu_UFO_m  = pygame.image.load("menu_ufo_m.png")
-# 遊戲主頁面圖片
 
 # =============================================================================
 
@@ -49,9 +48,6 @@ def intro():
 	menu2_y     = 400
 	menu3_x     = 250
 	menu3_y     = 400
-	menu4_x     = 250
-	menu4_y     = 400
-
 	menu_width  = 100
 	menu_height = 50
 	# 背景
@@ -65,7 +61,6 @@ def intro():
 	# ------------------------------------------------------------------------
 	# 首頁迴圈
 	while intro:
-		
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -86,27 +81,22 @@ def intro():
 		message_display("Go"    , 38 , menu1_x + menu_width / 2 , menu1_y + menu_height / 2)
 		message_display("Exit"  , 38 , menu2_x + menu_width / 2 , menu2_y + menu_height / 2)
 		message_display("high"  , 38 , menu3_x + menu_width / 2 , menu3_y + menu_height / 2)
-
-		# pygame.display.update()
 		# 碰到的時候變顏色
 		mouse = pygame.mouse.get_pos()
 		click = pygame.mouse.get_pressed()
-		# print(click[0])
 		if (menu1_x < mouse[0] < menu1_x + menu_width) and (menu1_y < mouse[1] < menu1_y + menu_height):
 			pygame.draw.rect(gameDisplay,gray,(menu1_x,menu1_y,menu_width,menu_height))
-			if click[0] == 1:
-				intro = False
+			if click[0] == 1: intro = False
 		if (menu2_x < mouse[0] < menu2_x + menu_width) and (menu2_y < mouse[1] < menu2_y + menu_height):
 			pygame.draw.rect(gameDisplay,gray,(menu2_x,menu2_y,menu_width,menu_height))
 			if click[0] == 1:
 				pygame.quit()
 				quit()
+		# 進入排行榜
 		if (menu3_x < mouse[0] < menu3_x + menu_width) and (menu3_y < mouse[1] < menu3_y + menu_height):
 			pygame.draw.rect(gameDisplay,gray,(menu3_x,menu3_y,menu_width,menu_height))
-			if click[0] == 1:
-				high()
+			if click[0] == 1: high()
 		pygame.display.update()
-		# track time
 		clock.tick(50)
 def text_objects(text,font):
 	textSurface = font.render(text,True,white)
@@ -118,18 +108,20 @@ def message_display(text,size,x,y):
 	gameDisplay.blit(text_surface , text_rectangle)
 def high():
 	import csv
-	menu4_x     = 170
-	menu4_y     = 500
-	menu_width2  = 250
-	menu_height2 = 50
-	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
-	csv1 = csv.DictReader(fh1) 
-	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
-	list = []
+	menu4_x 		= 170
+	menu4_y 		= 500
+	menu_width2 	= 250
+	menu_height2 	= 50
+	# 讀入排行榜資訊
+	fh1 	= open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	csv1 	= csv.DictReader(fh1) 
+	cname1 	= csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
+	list 	= []
 	for aline in csv1:
 		list1 = [aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip()]
 		list.append(list1)
 	fh1.close()
+	# 排行榜顯示
 	gameDisplay.fill(black)
 	titFont = pygame.font.Font('Starjhol.ttf', 50)
 	titSurf = titFont.render('Leaderboard', True, red)
@@ -145,7 +137,6 @@ def high():
 	titRect3 = titSurf3.get_rect()
 	titRect3.midtop = (300, 420)
 	gameDisplay.blit(titSurf3, titRect3)
-
 	message_display(list[0][0], 38 , 100,200)
 	message_display(list[0][1], 38 , 250,200)
 	message_display(list[0][2], 38 , 450,200)
@@ -156,18 +147,16 @@ def high():
 	message_display(list[2][1], 38 , 250,400)
 	message_display(list[2][2], 38 , 450,400)
 	high_run = True
-	while high_run:
 
+	while high_run:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-
+		# 回主頁
 		pygame.draw.rect(gameDisplay,gray,  (menu4_x,menu4_y,menu_width2,menu_height2))
-		# 碰到的時候變顏色
 		mouse1 = pygame.mouse.get_pos()
 		click1 = pygame.mouse.get_pressed()
-
 		if (menu4_x < mouse1[0] < menu4_x + menu_width2) and (menu4_y < mouse1[1] < menu4_y + menu_height2):
 			pygame.draw.rect(gameDisplay,blue,(menu4_x,menu4_y,menu_width2,menu_height2))
 			if click1[0] == 1:
@@ -176,5 +165,4 @@ def high():
 		message_display("return"    , 38 , menu4_x + menu_width2 / 2 , menu4_y + menu_height2 / 2)
 		pygame.display.update()
 	return
-
 # =============================================================================

@@ -119,7 +119,7 @@ def message_display(text,size,x,y):
 def high():
 	import csv
 	menu4_x     = 170
-	menu4_y     = 400
+	menu4_y     = 500
 	menu_width2  = 250
 	menu_height2 = 50
 	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
@@ -132,20 +132,29 @@ def high():
 	fh1.close()
 	gameDisplay.fill(black)
 	titFont = pygame.font.Font('Starjhol.ttf', 50)
-	titSurf = titFont.render('Leaderboard', True, white)
+	titSurf = titFont.render('Leaderboard', True, red)
 	titRect = titSurf.get_rect()
 	titRect.midtop = (300, 20)
 	gameDisplay.blit(titSurf, titRect)
+	titFont2 = pygame.font.Font('Starjhol.ttf', 50)
+	titSurf2 = titFont2.render('------------------------------', True, red)
+	titRect2 = titSurf2.get_rect()
+	titRect2.midtop = (300, 80)
+	gameDisplay.blit(titSurf2, titRect2)
+	titSurf3 = titFont2.render('------------------------------', True, red)
+	titRect3 = titSurf3.get_rect()
+	titRect3.midtop = (300, 420)
+	gameDisplay.blit(titSurf3, titRect3)
 
-	message_display(list[0][0], 38 , 100,150)
-	message_display(list[0][1], 38 , 250,150)
-	message_display(list[0][2], 38 , 450,150)
-	message_display(list[1][0], 38 , 100,250)
-	message_display(list[1][1], 38 , 250,250)
-	message_display(list[1][2], 38 , 450,250)
-	message_display(list[2][0], 38 , 100,350)
-	message_display(list[2][1], 38 , 250,350)
-	message_display(list[2][2], 38 , 450,350)
+	message_display(list[0][0], 38 , 100,200)
+	message_display(list[0][1], 38 , 250,200)
+	message_display(list[0][2], 38 , 450,200)
+	message_display(list[1][0], 38 , 100,300)
+	message_display(list[1][1], 38 , 250,300)
+	message_display(list[1][2], 38 , 450,300)
+	message_display(list[2][0], 38 , 100,400)
+	message_display(list[2][1], 38 , 250,400)
+	message_display(list[2][2], 38 , 450,400)
 	high_run = True
 	while high_run:
 
@@ -154,13 +163,13 @@ def high():
 				pygame.quit()
 				quit()
 
-		pygame.draw.rect(gameDisplay,black,  (menu4_x,menu4_y,menu_width2,menu_height2))
+		pygame.draw.rect(gameDisplay,gray,  (menu4_x,menu4_y,menu_width2,menu_height2))
 		# 碰到的時候變顏色
 		mouse1 = pygame.mouse.get_pos()
 		click1 = pygame.mouse.get_pressed()
 
 		if (menu4_x < mouse1[0] < menu4_x + menu_width2) and (menu4_y < mouse1[1] < menu4_y + menu_height2):
-			pygame.draw.rect(gameDisplay,gray,(menu4_x,menu4_y,menu_width2,menu_height2))
+			pygame.draw.rect(gameDisplay,blue,(menu4_x,menu4_y,menu_width2,menu_height2))
 			if click1[0] == 1:
 				gameDisplay.fill(black)
 				high_run = False

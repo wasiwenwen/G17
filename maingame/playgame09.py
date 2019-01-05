@@ -102,7 +102,8 @@ runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/
 
 #讀入飛碟圖片
 carImg = pygame.image.load("ufo.png")
-# carImg = pygame.transform.scale(carImg,(car_width, car_height))
+carImg2 = pygame.image.load("ufobest.png")
+
 #讀入星球圖片
 Picture = []
 g0 = pygame.image.load("g0.png")

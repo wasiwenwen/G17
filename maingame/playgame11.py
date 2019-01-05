@@ -106,7 +106,7 @@ runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/
 
 #讀入飛碟圖片
 carImg = pygame.image.load("ufo.png")
-
+carImg2 = pygame.image.load("ufo2.png")
 
 #讀入星球圖片
 Picture = []
@@ -154,8 +154,13 @@ def things(thingx, thingy, word):
 
 	
 #設定汽車位置，注意：越右邊X越大，越上面Y越小，視窗的左上方是(0,0)
-def car(x,y):
-	gameDisplay.blit(carImg, (x,y)) 
+def car(x, y , score):
+	global his_high_score
+	if score >= his_high_score:
+		gameDisplay.blit(carImg2, (x,y))
+	else:	
+		gameDisplay.blit(carImg, (x,y))
+
 
 #設定障礙物
 def set_things(planet_height, PlanetRange):
@@ -223,7 +228,7 @@ def runGame():
 	pygame.mixer.music.play(-1)
 	
 	#設定分數
-	score = 0
+	score = 1200
 
 	#設定初始值
 	thing_speed = 5
@@ -322,7 +327,7 @@ def runGame():
 		thing_D_starty += thing_speed
 				
 		#設定汽車的位置
-		car(x,y)
+		car(x,y, score)
 		
 		#check_eat
 		if checkTrue == True:

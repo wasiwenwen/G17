@@ -49,6 +49,8 @@ def intro():
 	menu2_y     = 400
 	menu3_x     = 250
 	menu3_y     = 400
+	menu4_x     = 250
+	menu4_y     = 400
 
 	menu_width  = 100
 	menu_height = 50
@@ -81,10 +83,15 @@ def intro():
 		pygame.draw.rect(gameDisplay,blue,  (menu1_x,menu1_y,menu_width,menu_height))
 		pygame.draw.rect(gameDisplay,red,   (menu2_x,menu2_y,menu_width,menu_height))
 		pygame.draw.rect(gameDisplay,green,   (menu3_x,menu3_y,menu_width,menu_height))
-		
+		message_display("Go"    , 38 , menu1_x + menu_width / 2 , menu1_y + menu_height / 2)
+		message_display("Exit"  , 38 , menu2_x + menu_width / 2 , menu2_y + menu_height / 2)
+		message_display("high"  , 38 , menu3_x + menu_width / 2 , menu3_y + menu_height / 2)
+
+		# pygame.display.update()
 		# 碰到的時候變顏色
 		mouse = pygame.mouse.get_pos()
 		click = pygame.mouse.get_pressed()
+		print(click[0])
 		if (menu1_x < mouse[0] < menu1_x + menu_width) and (menu1_y < mouse[1] < menu1_y + menu_height):
 			pygame.draw.rect(gameDisplay,gray,(menu1_x,menu1_y,menu_width,menu_height))
 			if click[0] == 1:
@@ -98,11 +105,6 @@ def intro():
 			pygame.draw.rect(gameDisplay,gray,(menu3_x,menu3_y,menu_width,menu_height))
 			if click[0] == 1:
 				high()
-
-		message_display("Go"    , 38 , menu1_x + menu_width / 2 , menu1_y + menu_height / 2)
-		message_display("Exit"  , 38 , menu2_x + menu_width / 2 , menu2_y + menu_height / 2)
-		message_display("high"  , 38 , menu3_x + menu_width / 2 , menu3_y + menu_height / 2)
-
 		pygame.display.update()
 		# track time
 		clock.tick(50)
@@ -116,6 +118,10 @@ def message_display(text,size,x,y):
 	gameDisplay.blit(text_surface , text_rectangle)
 def high():
 	import csv
+	menu4_x     = 170
+	menu4_y     = 400
+	menu_width2  = 250
+	menu_height2 = 50
 	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
 	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
@@ -125,14 +131,41 @@ def high():
 		list.append(list1)
 	fh1.close()
 	gameDisplay.fill(black)
-	message_display(list[0][0], 38 , 100,100)
-	message_display(list[0][1], 38 , 200,100)
-	message_display(list[0][2], 38 , 400,100)
-	message_display(list[1][0], 38 , 100,200)
-	message_display(list[1][1], 38 , 200,200)
-	message_display(list[1][2], 38 , 400,200)
-	message_display(list[2][0], 38 , 100,300)
-	message_display(list[2][1], 38 , 200,300)
-	message_display(list[2][2], 38 , 400,300)
-	# pygame.display.update()
+	titFont = pygame.font.Font('Starjhol.ttf', 50)
+	titSurf = titFont.render('Leaderboard', True, white)
+	titRect = titSurf.get_rect()
+	titRect.midtop = (300, 20)
+	gameDisplay.blit(titSurf, titRect)
+
+	message_display(list[0][0], 38 , 100,150)
+	message_display(list[0][1], 38 , 250,150)
+	message_display(list[0][2], 38 , 450,150)
+	message_display(list[1][0], 38 , 100,250)
+	message_display(list[1][1], 38 , 250,250)
+	message_display(list[1][2], 38 , 450,250)
+	message_display(list[2][0], 38 , 100,350)
+	message_display(list[2][1], 38 , 250,350)
+	message_display(list[2][2], 38 , 450,350)
+	high_run = True
+	while high_run:
+
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+
+		pygame.draw.rect(gameDisplay,black,  (menu4_x,menu4_y,menu_width2,menu_height2))
+		# 碰到的時候變顏色
+		mouse1 = pygame.mouse.get_pos()
+		click1 = pygame.mouse.get_pressed()
+
+		if (menu4_x < mouse1[0] < menu4_x + menu_width2) and (menu4_y < mouse1[1] < menu4_y + menu_height2):
+			pygame.draw.rect(gameDisplay,gray,(menu4_x,menu4_y,menu_width2,menu_height2))
+			if click1[0] == 1:
+				gameDisplay.fill(black)
+				high_run = False
+		message_display("return"    , 38 , menu4_x + menu_width2 / 2 , menu4_y + menu_height2 / 2)
+		pygame.display.update()
+	return
+
 # =============================================================================

@@ -206,7 +206,10 @@ def main():
 	BASICFONT = pygame.font.Font('freesansbold.ttf', 18)  
 	pygame.display.set_caption('Stroop UFO')
 
-	
+	#設定音樂
+	channel1 = pygame.mixer.Channel(0)
+	pygame.mixer.music.load("for final.mp3")
+	pygame.mixer.music.play(-1)
 	#顯示首頁
 	intro()
 	user = get_user()
@@ -216,8 +219,10 @@ def main():
 		break_record()
 		call = showGameOverScreen()
 		if call =='again':
+			pygame.mixer.music.play(-1)
 			continue
 		elif call == 'home':
+			pygame.mixer.music.play(-1)
 			intro()
 			user = get_user()
 
@@ -228,10 +233,7 @@ def runGame():
 	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
 	y = (display_height * 0.8)
 	
-	#設定音樂
-	channel1 = pygame.mixer.Channel(0)
-	pygame.mixer.music.load("for final.mp3")
-	pygame.mixer.music.play(-1)
+
 	
 	#設定分數
 	score = 0

@@ -54,7 +54,7 @@ def showGameOverScreen():
         pygame.draw.rect(gameDisplay,blue,  (btn1_x,btn1_y,btn_width,btn_height))
         pygame.draw.rect(gameDisplay,red,   (btn2_x,btn2_y,btn_width,btn_height))
         message_display("again" , 34 , btn1_x + btn_width / 2 , btn1_y + btn_height / 2)
-        message_display("intro" , 34 , btn2_x + btn_width / 2 , btn2_y + btn_height / 2)
+        message_display("home" , 34 , btn2_x + btn_width / 2 , btn2_y + btn_height / 2)
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         if (btn1_x < mouse[0] < btn1_x + btn_width) and (btn1_y < mouse[1] < btn1_y + btn_height):
@@ -65,7 +65,7 @@ def showGameOverScreen():
         if (btn2_x < mouse[0] < btn2_x + btn_width) and (btn2_y < mouse[1] < btn2_y + btn_height):
             pygame.draw.rect(gameDisplay,gray,(btn2_x,btn2_y,btn_width,btn_height))
             if click[0] == 1:
-                return 'intro'
+                return 'home'
                 over_run = False
         pygame.display.update()
 

@@ -216,7 +216,7 @@ def main():
 		call = showGameOverScreen()
 		if call =='again':
 			continue
-		elif call == 'intro':
+		elif call == 'home':
 			intro()
 			user = get_user()
 

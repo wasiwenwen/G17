@@ -135,7 +135,7 @@ def runGame():
 	pygame.mixer.music.play(-1)
 	
 	#設定分數
-	score = 900
+	score = 0
 
 	#設定初始值
 	thing_speed = 5

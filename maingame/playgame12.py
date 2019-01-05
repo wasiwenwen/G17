@@ -212,6 +212,7 @@ def main():
 	user = get_user()
 	while True:
 		runGame()
+		pygame.mixer.music.pause()
 		break_record()
 		call = showGameOverScreen()
 		if call =='again':

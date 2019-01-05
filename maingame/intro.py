@@ -40,7 +40,7 @@ def intro():
 	'''首頁'''
 	intro       = True
 	# 音樂
-	pygame.mixer.music.play(-1)
+	# pygame.mixer.music.play(-1)
 	# 首頁按鈕配置
 	menu1_x     = 100
 	menu1_y     = 400

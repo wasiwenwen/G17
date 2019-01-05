@@ -91,7 +91,7 @@ def intro():
 		# 碰到的時候變顏色
 		mouse = pygame.mouse.get_pos()
 		click = pygame.mouse.get_pressed()
-		print(click[0])
+		# print(click[0])
 		if (menu1_x < mouse[0] < menu1_x + menu_width) and (menu1_y < mouse[1] < menu1_y + menu_height):
 			pygame.draw.rect(gameDisplay,gray,(menu1_x,menu1_y,menu_width,menu_height))
 			if click[0] == 1:

@@ -180,10 +180,20 @@ def make_next_things(thing_starty1, thing_starty2, display_height):
 	word_next = random.choice(Picture)
 	return thing_startx1, thing_starty1, word_next
 
-
+#吃到東西加分後重新生成新的	
+def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
+	global score
+	channel1.play(pygame.mixer.Sound("eat.wav"))
+	thing_startx += 10000
+	score += 100
+	pygame.display.update()
+	thing_starty = thing_D_starty - PlanetRange 
+	thing_startx = random.choice(runway)
+	word = random.choice(Picture)
+	return thing_starty, thing_startx, word
 #=========================================================================================	
 def main():  
-	global SnakespeedCLOCK, gameDisplay, BASICFONT,user,his_high_score,score
+	global SnakespeedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score
 
 	pygame.init()  
 	SnakespeedCLOCK = pygame.time.Clock()  
@@ -282,21 +292,21 @@ def runGame():
 		#依分數增加速度
 		if score < 300:
 			PlanetRange = 500
-			thing_speed = 6 #用來加速 
+			thing_speed = 5 #用來加速 
 
 		elif 300 <= score < 1000:
 			PlanetRange = 400
-			thing_speed = 7 #用來加速 
+			thing_speed = 6 #用來加速 
 
 			
 		elif 1000 <= score < 1500:
 			PlanetRange = 300
-			thing_speed = 8 #用來加速 
+			thing_speed = 6.5 #用來加速 
 
 			
 		elif score >= 1500:
 			PlanetRange = 200
-			thing_speed = 9 #用來加速 
+			thing_speed = 7 #用來加速 
 
 
 		#things(thingx, thingy, word)
@@ -314,77 +324,37 @@ def runGame():
 		#設定汽車的位置
 		car(x,y)
 		
-		#check eat 
+		#check_eat
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
-				channel1.play(pygame.mixer.Sound("eat.wav"))
-				thing_startx += 10000
-				score += 100
-				pygame.display.update()
-				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
-				else: thing_speed = max_thing_speed 
-				thing_starty = thing_D_starty - PlanetRange 
-				thing_startx = random.choice(runway)
-				word = random.choice(Picture)
+				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
 			elif thing_starty > display_height:
 				return
-				
+			
 		if checkTrue_A == True:
 			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
-				channel1.play(pygame.mixer.Sound("eat.wav"))                
-				thing_A_startx += 10000
-				score += 100
-				pygame.display.update()
-				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
-				else: thing_speed = max_thing_speed 
-				thing_A_starty = thing_starty - PlanetRange 
-				thing_A_startx = random.choice(runway)
-				word_A = random.choice(Picture)
+				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
 			elif thing_A_starty > display_height:
 				return
-				
+			
 		if checkTrue_B == True:
 			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
-				channel1.play(pygame.mixer.Sound("eat.wav"))                
-				thing_B_startx += 10000
-				score += 100
-				pygame.display.update()
-				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
-				else: thing_speed = max_thing_speed 
-				thing_B_starty = thing_A_starty - PlanetRange 
-				thing_B_startx = random.choice(runway)
-				word_B = random.choice(Picture)
+				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
 			elif thing_B_starty > display_height:
-				return              
-
+				return
+			
 		if checkTrue_C == True:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
-				channel1.play(pygame.mixer.Sound("eat.wav"))
-				thing_C_startx += 10000
-				score += 100
-				pygame.display.update()
-				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
-				else: thing_speed = max_thing_speed 
-				thing_C_starty = thing_B_starty - PlanetRange 
-				thing_C_startx = random.choice(runway)
-				word_C = random.choice(Picture)
+				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
 			elif thing_C_starty > display_height:
 				return
-				
+			
 		if checkTrue_D == True:
 			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
-				channel1.play(pygame.mixer.Sound("eat.wav"))                
-				thing_D_startx += 10000
-				score += 100
-				pygame.display.update()
-				if thing_speed <= max_thing_speed: thing_speed += 0.5 #用來加速 
-				else: thing_speed = max_thing_speed 
-				thing_D_starty = thing_C_starty - PlanetRange 
-				thing_D_startx = random.choice(runway)
-				word_D = random.choice(Picture)
+				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
 			elif thing_D_starty > display_height:
 				return
-		
+
 		# 是否超越歷史紀錄
 		if int(score) > int(his_high_score):
 			his_high_score = score
@@ -394,18 +364,19 @@ def runGame():
 		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue == False:
 			if x == thing_startx:
 				return #吃到錯誤的GAMOVER
-		#check crash
+				
 		if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and checkTrue_A == False:
 			if x == thing_A_startx:
 				return #吃到錯誤的GAMOVER
-		#check crash        
+    
 		if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and checkTrue_B == False:
 			if x == thing_B_startx:
 				return #吃到錯誤的GAMOVER
-		#check crash        
+		        
 		if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and checkTrue_C == False:
 			if x == thing_C_startx:
-				return #吃到錯誤的GAMOVER            
+				return #吃到錯誤的GAMOVER
+				
 		if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and checkTrue_D == False:
 			if x == thing_D_startx:
 				return #吃到錯誤的GAMOVER

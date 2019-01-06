@@ -341,7 +341,7 @@ def runGame():
 		car(x,y, score)
 		
 		#check_eat
-		deadline = display_height - car_height
+		deadline = display_height - car_height/2
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
 				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)

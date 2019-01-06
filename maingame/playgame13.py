@@ -565,7 +565,6 @@ def runGame2():
 	PlanetRange = 600
 	
 	#設定障礙物(五個)
-	print(PlanetRange)
 	thing_startx, thing_starty, word = random_things(planet_height, (PlanetRange * 0))
 	thing_A_startx, thing_A_starty, word_A = random_things(planet_height, (PlanetRange * 1))
 	thing_B_startx, thing_B_starty, word_B = random_things(planet_height, (PlanetRange * 2))

@@ -10,12 +10,13 @@ user = ""
 
 # 單一使用者分數
 score = 0
+score2 = 0
 
 # =====================================================
 # 歷史紀錄
 def his_high(): #紀錄目前最高分
 	import csv
-	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	fh1 = open('his_high1.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
 	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
 	list = []
@@ -30,7 +31,7 @@ def his_high(): #紀錄目前最高分
 
 def his_high_3(): #紀錄前三高分
 	import csv
-	fh1 = open('his_high.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	fh1 = open('his_high1.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
 	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
 
@@ -59,7 +60,7 @@ def break_record():
 		else:
 			his_list[2] = [3,user,score]
 
-	with open('his_high.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
+	with open('his_high.csv1', 'w', newline='', encoding = 'utf-8') as csvfile:
 		# 建立 CSV 檔寫入器
 		writer = csv.writer(csvfile)
 
@@ -71,7 +72,67 @@ def break_record():
 		writer.writerow(his_list[1])
 		writer.writerow(his_list[2])
 	csvfile.close()
-	
+
+# ----------------------------------------------
+# 歷史紀錄2
+def his_high2(): #紀錄目前最高分
+	import csv
+	fh1 = open('his_high2.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	csv1 = csv.DictReader(fh1) 
+	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
+	list = []
+	for aline in csv1:
+		tuple = (aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip())
+		list.append(tuple)
+
+	his_high = list[0][2]
+	fh1.close()
+	return int(his_high)
+
+
+def his_high_32(): #紀錄前三高分
+	import csv
+	fh1 = open('his_high2.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	csv1 = csv.DictReader(fh1) 
+	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
+
+	list = []
+	for aline in csv1:
+		list1 = [aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip()]
+		list.append(list1)
+	his_high = (list[0][1],list[0][2])
+	fh1.close()
+	return list
+
+
+def break_record2():
+	global score2,user
+	import csv
+	if score2 > int(his_list2[2][2]):
+		if score2 > int(his_list2[1][2]):
+			if score2 > int(his_list2[0][2]):
+				his_list2[2] = [3,his_list2[1][1],his_list2[1][2]]
+				his_list2[1] = [2,his_list2[0][1],his_list2[0][2]]
+				his_list2[0] = [1,user,score2]
+			else:
+				his_list2[2] = [3,his_list2[1][1],his_list2[1][2]]
+				his_list2[1] = [2,user,score2]
+				
+		else:
+			his_list2[2] = [3,user,score2]
+
+	with open('his_high1.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
+		# 建立 CSV 檔寫入器
+		writer = csv.writer(csvfile)
+
+		# 寫入一列資料
+		writer.writerow(['#', 'user', 'score'])
+
+		# 寫入另外幾列資料
+		writer.writerow(his_list2[0])
+		writer.writerow(his_list2[1])
+		writer.writerow(his_list2[2])
+	csvfile.close()	
 # =====================================================
 #基本設定
 
@@ -90,6 +151,7 @@ blue    = (99,148,248)
 #設定汽車寬度(查圖片像素)
 car_height = 75
 car_width = 135
+car_width2 = 200 #for hardgame
 
 #設定星球大小
 planet_height = 75
@@ -150,14 +212,17 @@ Picture.append(r0)
 Picture.append(y0)
 Picture.append(b0)
 
-yellow = [b2,g2,r1,y0]
+yellow = [b2, g2, r1, y0, y0]
 Picture2 = Picture.copy() #for hardgame
 for i in yellow:
 	Picture2.remove(i)
-print(Picture2)
+# print(Picture2)
+
 #最高分與排行榜
 his_high_score = his_high()
 his_list = his_high_3()
+his_high_score2 = his_high2()
+his_list2 = his_high_32()
 #======================================================================
 
 #建立障礙物
@@ -173,9 +238,9 @@ def car(x, y , score):
 	else:
 		gameDisplay.blit(carImg, (x,y))
 
-def car2(x, y , score, ufo):
-	global his_high_score
-	if score >= his_high_score:
+def car2(x, y , score2, ufo):
+	global his_high_score2
+	if score2 >= his_high_score2:
 		gameDisplay.blit(carImg2, (x,y))
 	else:
 		gameDisplay.blit(ufo, (x,y))
@@ -223,7 +288,7 @@ def make_next_things(thing_starty1, thing_starty2, display_height):
 	word_next = random.choice(Picture)
 	return thing_startx1, thing_starty1, word_next
 
-#吃到東西加分後重新生成新的	
+#吃到東西加分後重新生成新的	for easygame
 def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
 	global score
 	channel1.play(pygame.mixer.Sound("eat.wav"))
@@ -234,9 +299,21 @@ def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
 	thing_startx = random.choice(runway)
 	word = random.choice(Picture)
 	return thing_starty, thing_startx, word
+
+#吃到東西加分後重新生成新的	for hardgame	
+def check_eat2(thing_startx, thing_starty, thing_D_starty, channel1): 
+	global score2
+	channel1.play(pygame.mixer.Sound("eat.wav"))
+	thing_startx += 10000
+	score2 += 100
+	pygame.display.update()
+	thing_starty = thing_D_starty - PlanetRange
+	thing_startx = display_width/6 * 3 - planet_width/2
+	word = random.choice(Picture2)
+	return thing_starty, thing_startx, word
 #=========================================================================================	
 def main():  
-	global SnakespeedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score
+	global SnakespeedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score, his_high_score2, score2
 
 	pygame.init()  
 	SnakespeedCLOCK = pygame.time.Clock()  
@@ -249,21 +326,33 @@ def main():
 	pygame.mixer.music.load("for final.mp3")
 	pygame.mixer.music.play(-1)
 	
-	#顯示首頁
-	intro()
-	user = get_user()
 	while True:
-		runGame2()
-		pygame.mixer.music.pause()
-		break_record()
-		call = showGameOverScreen()
-		if call =='again':
-			pygame.mixer.music.play(-1)
-			continue
-		elif call == 'home':
-			pygame.mixer.music.play(-1)
-			intro()
-			user = get_user()
+		intro_call = intro()
+		user = get_user()
+		if intro_call == 'runGame1':
+			while True:
+				runGame1()
+				pygame.mixer.music.pause()
+				break_record()
+				call = showGameOverScreen()
+				if call =='again':
+					pygame.mixer.music.play(-1)
+					continue
+				elif call == 'home':
+					pygame.mixer.music.play(-1)
+					break
+		elif intro_call == 'runGame2':
+			while True:
+				runGame2()
+				pygame.mixer.music.pause()
+				break_record2()
+				call = showGameOverScreen()
+				if call =='again':
+					pygame.mixer.music.play(-1)
+					continue
+				elif call == 'home':
+					pygame.mixer.music.play(-1)
+					break
 
 
 #主遊戲迴圈
@@ -463,14 +552,13 @@ def runGame1():
 
 
 def runGame2():
-	global his_high_score, score, PlanetRange
-	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
+	global his_high_score2, score2, PlanetRange, planet_height
+	x = (display_width/2 - car_width2/2) #一開始設計在畫面正中央
 	y = (display_height * 0.8)
 	
 	channel1 = pygame.mixer.Channel(0)
 	#設定分數
-	score = 0
-	
+	score2 = 0
 	#設定一開始的ufo
 	ufo = carImg_blue
 	ufo_color = "blue"
@@ -534,8 +622,8 @@ def runGame2():
 		
 		# scoresreen
 		scoreFont = pygame.font.Font('Starjhol.ttf', 22)
-		scoreSurf = scoreFont.render('your score:'+str(score), True, white)
-		highscoreSurf = scoreFont.render('high score:'+str(his_high_score), True, white)
+		scoreSurf = scoreFont.render('your score:'+str(score2), True, white)
+		highscoreSurf = scoreFont.render('high score:'+str(his_high_score2), True, white)
 		scoreRect = scoreSurf.get_rect()
 		highscoreRect = highscoreSurf.get_rect()
 		scoreRect.midtop = (display_width - 170, 550)
@@ -544,21 +632,22 @@ def runGame2():
 		gameDisplay.blit(highscoreSurf, highscoreRect)
 		
 		#依分數增加速度
-		if score < 300:
+		print(score2)
+		if score2 < 300:
 			PlanetRange = 500
 			thing_speed = 5 #用來加速 
 
-		elif 300 <= score < 500:
+		elif 300 <= score2 < 500:
 			PlanetRange = 400
 			thing_speed = 6 #用來加速 
 
 			
-		elif 500 <= score < 1000:
+		elif 500 <= score2 < 1000:
 			PlanetRange = 300
 			thing_speed = 7 #用來加速 
 
 			
-		elif score >= 1000:
+		elif score2 >= 1000:
 			PlanetRange = 200
 			thing_speed = 8 #用來加速 
 
@@ -576,78 +665,49 @@ def runGame2():
 		thing_D_starty += thing_speed
 				
 		#設定汽車的位置
-		car2(x,y, score, ufo)
+		car2(x,y, score2, ufo)
 		
 		#check_eat
 		deadline = display_height - car_height
 		if checkTrue == ufo_color:
-			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
-				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
-			elif thing_starty > deadline:
-				return
+			if (y < (thing_starty) and y + car_height >= thing_starty):
+				thing_starty, thing_startx, word = check_eat2(thing_startx, thing_starty, thing_D_starty, channel1)
+
 			
 		if checkTrue_A == ufo_color:
-			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
-				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
-			elif thing_A_starty > deadline:
-				return
+			if (y < (thing_A_starty) and y + car_height >= thing_A_starty):
+				thing_A_starty, thing_A_startx, word_A = check_eat2(thing_A_startx, thing_A_starty, thing_starty, channel1)
+
 			
 		if checkTrue_B == ufo_color:
-			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
-				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
-			elif thing_B_starty > deadline:
-				return
+			if (y < (thing_B_starty) and y + car_height >= thing_B_starty):
+				thing_B_starty, thing_B_startx, word_B = check_eat2(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
 			
 		if checkTrue_C == ufo_color:
-			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
-				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
-			elif thing_C_starty > deadline:
-				return
+			if (y < (thing_C_starty) and y + car_height >= thing_C_starty):
+				thing_C_starty, thing_C_startx, word_C = check_eat2(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
 			
 		if checkTrue_D == ufo_color:
-			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
-				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
-			elif thing_D_starty > deadline:
-				return
+			if (y < (thing_D_starty) and y + car_height >= thing_D_starty):
+				thing_D_starty, thing_D_startx, word_D = check_eat2(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
 
 		# 是否超越歷史紀錄
-		if int(score) > int(his_high_score):
-			his_high_score = score
+		if int(score2) > int(his_high_score2):
+			his_high_score2 = score2
 			his_high_user = user
 
 		#check crash
-		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue != ufo_color:
-			if x == thing_startx:
-				return #吃到錯誤的GAMOVER
-				
-		if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and checkTrue_A != ufo_color:
-			if x == thing_A_startx:
-				return #吃到錯誤的GAMOVER
-    
-		if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and checkTrue_B != ufo_color:
-			if x == thing_B_startx:
-				return #吃到錯誤的GAMOVER
-		        
-		if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and checkTrue_C != ufo_color:
-			if x == thing_C_startx:
-				return #吃到錯誤的GAMOVER
-				
-		if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and checkTrue_D != ufo_color:
-			if x == thing_D_startx:
-				return #吃到錯誤的GAMOVER
+		if (thing_starty + planet_height - 40 >= y) and checkTrue != ufo_color:
+			return 	
+		if (thing_A_starty + planet_height - 40 >= y) and checkTrue_A != ufo_color:
+			return 
+		if (thing_B_starty + planet_height - 40 >= y) and checkTrue_B != ufo_color:
+			return       
+		if (thing_C_starty + planet_height - 40 >= y) and checkTrue_C != ufo_color:
+			return	
+		if (thing_D_starty + planet_height - 40 >= y) and checkTrue_D != ufo_color:
+			return 
 		
-		#星球超過下界，就再生成一個新的
-		if thing_starty > display_height:
-			thing_startx, thing_starty, word = make_next_things(thing_starty, thing_D_starty, display_height)	
-		if thing_A_starty > display_height:
-			thing_A_startx, thing_A_starty, word_A = make_next_things(thing_A_starty, thing_starty, display_height)
-		if thing_B_starty > display_height:
-			thing_B_startx, thing_B_starty, word_B = make_next_things(thing_B_starty, thing_A_starty, display_height)
-		if thing_C_starty > display_height:			
-			thing_C_startx, thing_C_starty, word_C = make_next_things(thing_C_starty, thing_B_starty, display_height)
-		if thing_D_starty > display_height:
-			thing_D_startx, thing_D_starty, word_D = make_next_things(thing_D_starty, thing_C_starty, display_height)		
-			
 		#讓背景動起來(2/2) - 改變位置參數
 		bg_y1 += bg_speed
 		bg_y2 += bg_speed

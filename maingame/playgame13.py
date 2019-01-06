@@ -106,10 +106,13 @@ runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/
 
 #讀入飛碟圖片
 carImg = pygame.image.load("ufo.png")
-carImg2 = pygame.image.load("ufo2.png")
+carImg2 = pygame.image.load("ufo2.png") #發光的
+carImg_blue = pygame.image.load("ufo_blue.png")
+carImg_green = pygame.image.load("ufo_green.png")
+carImg_red = pygame.image.load("ufo_red.png")
 
 #讀入星球圖片
-Picture = []
+Picture = [] #for easygame
 g0 = pygame.image.load("g0.png")
 Picture.append(g0)
 g1 = pygame.image.load("g1.png")
@@ -146,7 +149,12 @@ Picture.append(g0)
 Picture.append(r0)
 Picture.append(y0)
 Picture.append(b0)
-print(len(Picture))
+
+yellow = [b2,g2,r1,y0]
+Picture2 = Picture.copy() #for hardgame
+for i in yellow:
+	Picture2.remove(i)
+print(Picture2)
 #最高分與排行榜
 his_high_score = his_high()
 his_list = his_high_3()
@@ -165,7 +173,13 @@ def car(x, y , score):
 	else:	
 		gameDisplay.blit(carImg, (x,y))
 
-
+#產生下個東西
+def random_things(planet_height, PlanetRange):
+	planet = random.choice(Picture2)
+	thing_starty = 0 - planet_height - PlanetRange
+	thing_startx = display_width/6 * 3 - planet_width/2
+	return thing_startx,thing_starty, planet
+		
 #設定障礙物
 def set_things(planet_height, PlanetRange):
 	thing_startx = random.choice(runway) #X座標從跑道中任選一條
@@ -173,13 +187,26 @@ def set_things(planet_height, PlanetRange):
 	word2 = random.choice(Picture)
 	return thing_startx, thing_starty, word2
 
-#檢查物品要吃與否	
+#檢查物品要吃與否 for easygame
 def check_correct(word1):
 	global Picture
 	if (Picture.index(word1) == 0) or (Picture.index(word1) == 4) or (Picture.index(word1) == 8) or (Picture.index(word1) == 12) or (16 <=(Picture.index(word1)) <= 19):
 		return True
 	else:
 		return False
+
+#檢查物品要吃與否 for hardgame
+def check_correct2(word1):
+	global Picture2
+	blue_list = [2, 5, 8, 9, 14]
+	green_list = [0, 4, 7, 11, 12]
+	red_list = [1, 3, 6, 10, 13]
+	if Picture2.index(word1) in blue_list:
+		return "blue"
+	elif Picture2.index(word1) in green_list:
+		return "green"
+	elif Picture2.index(word1) in red_list:
+		return "red"
 
 #產生下個東西		
 def make_next_things(thing_starty1, thing_starty2, display_height):
@@ -214,11 +241,12 @@ def main():
 	channel1 = pygame.mixer.Channel(0)
 	pygame.mixer.music.load("for final.mp3")
 	pygame.mixer.music.play(-1)
+	
 	#顯示首頁
 	intro()
 	user = get_user()
 	while True:
-		runGame()
+		runGame1()
 		pygame.mixer.music.pause()
 		break_record()
 		call = showGameOverScreen()
@@ -232,7 +260,7 @@ def main():
 
 
 #主遊戲迴圈
-def runGame():
+def runGame1():
 	global his_high_score, score, PlanetRange
 	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
 	y = (display_height * 0.8)
@@ -425,7 +453,202 @@ def runGame():
 		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
 		SnakespeedCLOCK.tick(50)
 		pygame.display.update()
+
+
+def runGame2():
+	global his_high_score, score, PlanetRange
+	x = (display_width/2 - car_width/2) #一開始設計在畫面正中央
+	y = (display_height * 0.8)
+	
+	channel1 = pygame.mixer.Channel(0)
+	#設定分數
+	score = 0
+
+	#設定初始值
+	thing_speed = 5
+	max_thing_speed = 7
+	
+	#設定障礙物(五個)
+	tword = random_things(planet_height, (PlanetRange * 0))
+	thing_A_startx, thing_A_starty, word_A = random_things(planet_height, (PlanetRange * 1))
+	thing_B_startx, thing_B_starty, word_B = random_things(planet_height, (PlanetRange * 2))
+	thing_C_startx, thing_C_starty, word_C = random_things(planet_height, (PlanetRange * 3))
+	thing_D_startx, thing_D_starty, word_D = random_things(planet_height, (PlanetRange * 4))
+	
+	
+	# 讓背景動起來(1/2) - 設定背景的位置參數初始值
+	bg_speed = 3
+	bg_x1 = 0
+	bg_x2 = 0
+	bg_y1 = 0
+	bg_y2 = - display_height    
+	word = random.choice(Picture2)
+	
+	#while迴圈
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
 		
+			#設定按按鍵時汽車會位移
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_LEFT:
+					ufo = "green"
+				elif event.key == pygame.K_RIGHT and (x != display_width/6 * 5 - planet_width/2):
+					ufo = "blue"
+				elif event.key == pygame.K_RIGHT and (x != display_width/6 * 5 - planet_width/2):
+					ufo = "red"
+
+			# if event.type == pygame.KEYUP:
+				# if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+					# x_change = 0
+		
+		#檢查要吃與否
+		checkTrue = check_correct2(word)
+		checkTrue_A = check_correct2(word_A)
+		checkTrue_B = check_correct2(word_B)
+		checkTrue_C = check_correct2(word_C)
+		checkTrue_D = check_correct2(word_D)
+
+		#設定背景顏色，需特別注意，此條為將螢幕刷成同一顏色，若物件的函數寫在這之前，就會被刷成同一顏色而無法辨認
+		gameDisplay.fill(black)
+		background_image = pygame.image.load("bg.png").convert()
+		background_image = pygame.transform.scale(background_image,(display_height, display_width))
+		gameDisplay.blit(background_image,(bg_x1,bg_y1))
+		gameDisplay.blit(background_image,(bg_x2,bg_y2))
+		
+		# scoresreen
+		scoreFont = pygame.font.Font('Starjhol.ttf', 22)
+		scoreSurf = scoreFont.render('your score:'+str(score), True, white)
+		highscoreSurf = scoreFont.render('high score:'+str(his_high_score), True, white)
+		scoreRect = scoreSurf.get_rect()
+		highscoreRect = highscoreSurf.get_rect()
+		scoreRect.midtop = (display_width - 170, 550)
+		highscoreRect.midtop = (150, 550) 
+		gameDisplay.blit(scoreSurf, scoreRect)
+		gameDisplay.blit(highscoreSurf, highscoreRect)
+		
+		#依分數增加速度
+		if score < 300:
+			PlanetRange = 500
+			thing_speed = 5 #用來加速 
+
+		elif 300 <= score < 500:
+			PlanetRange = 400
+			thing_speed = 6 #用來加速 
+
+			
+		elif 500 <= score < 1000:
+			PlanetRange = 300
+			thing_speed = 7 #用來加速 
+
+			
+		elif score >= 1000:
+			PlanetRange = 200
+			thing_speed = 8 #用來加速 
+
+
+		#things(thingx, thingy, word)
+		things(thing_startx, thing_starty, word)
+		thing_starty += thing_speed
+		things(thing_A_startx, thing_A_starty, word_A)
+		thing_A_starty += thing_speed
+		things(thing_B_startx, thing_B_starty, word_B)
+		thing_B_starty += thing_speed
+		things(thing_C_startx, thing_C_starty, word_C)
+		thing_C_starty += thing_speed
+		things(thing_D_startx, thing_D_starty, word_D)
+		thing_D_starty += thing_speed
+				
+		#設定汽車的位置
+		car(x,y, score)
+		
+		#check_eat
+		deadline = display_height - car_height
+		if checkTrue == :
+			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
+				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
+			elif thing_starty > deadline:
+				return
+			
+		if checkTrue_A == True:
+			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
+				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
+			elif thing_A_starty > deadline:
+				return
+			
+		if checkTrue_B == True:
+			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
+				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
+			elif thing_B_starty > deadline:
+				return
+			
+		if checkTrue_C == True:
+			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
+				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
+			elif thing_C_starty > deadline:
+				return
+			
+		if checkTrue_D == True:
+			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
+				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
+			elif thing_D_starty > deadline:
+				return
+
+		# 是否超越歷史紀錄
+		if int(score) > int(his_high_score):
+			his_high_score = score
+			his_high_user = user
+
+		#check crash
+		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue == False:
+			if x == thing_startx:
+				return #吃到錯誤的GAMOVER
+				
+		if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and checkTrue_A == False:
+			if x == thing_A_startx:
+				return #吃到錯誤的GAMOVER
+    
+		if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and checkTrue_B == False:
+			if x == thing_B_startx:
+				return #吃到錯誤的GAMOVER
+		        
+		if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and checkTrue_C == False:
+			if x == thing_C_startx:
+				return #吃到錯誤的GAMOVER
+				
+		if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and checkTrue_D == False:
+			if x == thing_D_startx:
+				return #吃到錯誤的GAMOVER
+		
+		#星球超過下界，就再生成一個新的
+		if thing_starty > display_height:
+			thing_startx, thing_starty, word = make_next_things(thing_starty, thing_D_starty, display_height)	
+		if thing_A_starty > display_height:
+			thing_A_startx, thing_A_starty, word_A = make_next_things(thing_A_starty, thing_starty, display_height)
+		if thing_B_starty > display_height:
+			thing_B_startx, thing_B_starty, word_B = make_next_things(thing_B_starty, thing_A_starty, display_height)
+		if thing_C_starty > display_height:			
+			thing_C_startx, thing_C_starty, word_C = make_next_things(thing_C_starty, thing_B_starty, display_height)
+		if thing_D_starty > display_height:
+			thing_D_startx, thing_D_starty, word_D = make_next_things(thing_D_starty, thing_C_starty, display_height)		
+			
+		#讓背景動起來(2/2) - 改變位置參數
+		bg_y1 += bg_speed
+		bg_y2 += bg_speed
+		if bg_y1 >= display_height:
+			bg_y1 = - display_height
+			
+		if bg_y2 >= display_height:
+			bg_y2 = - display_height
+		pygame.display.update() #pygame.display.flip()也可以
+		
+				
+		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
+		SnakespeedCLOCK.tick(50)
+		pygame.display.update()
+	
 #啟動主遊戲迴圈        
 if __name__ == '__main__':  
 	try:  

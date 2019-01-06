@@ -193,6 +193,7 @@ def make_next_things(thing_starty1, thing_starty2, display_height):
 def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
 	global score
 	channel1.play(pygame.mixer.Sound("eat.wav"))
+	
 	thing_startx += 10000
 	score += 100
 	pygame.display.update()
@@ -342,7 +343,7 @@ def runGame():
 		car(x,y, score)
 		
 		#check_eat
-		deadline = display_height - car_height
+		deadline = display_height - car_height/2
 		if checkTrue == True:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
 				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)

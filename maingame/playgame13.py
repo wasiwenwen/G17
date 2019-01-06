@@ -107,9 +107,9 @@ runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/
 #讀入飛碟圖片
 carImg = pygame.image.load("ufo.png")
 carImg2 = pygame.image.load("ufo2.png") #發光的
-carImg_blue = pygame.image.load("ufo_blue.png")
-carImg_green = pygame.image.load("ufo_green.png")
-carImg_red = pygame.image.load("ufo_red.png")
+carImg_blue = pygame.image.load("ufo_b.png")
+carImg_green = pygame.image.load("ufo_g.png")
+carImg_red = pygame.image.load("ufo_r.png")
 
 #讀入星球圖片
 Picture = [] #for easygame
@@ -170,9 +170,16 @@ def car(x, y , score):
 	global his_high_score
 	if score >= his_high_score:
 		gameDisplay.blit(carImg2, (x,y))
-	else:	
+	else:
 		gameDisplay.blit(carImg, (x,y))
 
+def car2(x, y , score, ufo):
+	global his_high_score
+	if score >= his_high_score:
+		gameDisplay.blit(carImg2, (x,y))
+	else:
+		gameDisplay.blit(ufo, (x,y))
+	
 #產生下個東西
 def random_things(planet_height, PlanetRange):
 	planet = random.choice(Picture2)
@@ -246,7 +253,7 @@ def main():
 	intro()
 	user = get_user()
 	while True:
-		runGame1()
+		runGame2()
 		pygame.mixer.music.pause()
 		break_record()
 		call = showGameOverScreen()
@@ -463,13 +470,17 @@ def runGame2():
 	channel1 = pygame.mixer.Channel(0)
 	#設定分數
 	score = 0
-
+	
+	#設定一開始的ufo
+	ufo = carImg_blue
+	ufo_color = "blue"
+	
 	#設定初始值
 	thing_speed = 5
 	max_thing_speed = 7
 	
 	#設定障礙物(五個)
-	tword = random_things(planet_height, (PlanetRange * 0))
+	thing_startx, thing_starty, word = random_things(planet_height, (PlanetRange * 0))
 	thing_A_startx, thing_A_starty, word_A = random_things(planet_height, (PlanetRange * 1))
 	thing_B_startx, thing_B_starty, word_B = random_things(planet_height, (PlanetRange * 2))
 	thing_C_startx, thing_C_starty, word_C = random_things(planet_height, (PlanetRange * 3))
@@ -494,11 +505,14 @@ def runGame2():
 			#設定按按鍵時汽車會位移
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
-					ufo = "green"
-				elif event.key == pygame.K_RIGHT and (x != display_width/6 * 5 - planet_width/2):
-					ufo = "blue"
-				elif event.key == pygame.K_RIGHT and (x != display_width/6 * 5 - planet_width/2):
-					ufo = "red"
+					ufo = carImg_blue
+					ufo_color = "blue"
+				elif event.key == pygame.K_RIGHT:
+					ufo = carImg_green
+					ufo_color = "green"
+				elif event.key == pygame.K_DOWN:
+					ufo = carImg_red
+					ufo_color = "red"
 
 			# if event.type == pygame.KEYUP:
 				# if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -562,35 +576,35 @@ def runGame2():
 		thing_D_starty += thing_speed
 				
 		#設定汽車的位置
-		car(x,y, score)
+		car2(x,y, score, ufo)
 		
 		#check_eat
 		deadline = display_height - car_height
-		if checkTrue == :
+		if checkTrue == ufo_color:
 			if (y < (thing_starty) and y + car_height >= thing_starty) and x == thing_startx:
 				thing_starty, thing_startx, word = check_eat(thing_startx, thing_starty, thing_D_starty, channel1)
 			elif thing_starty > deadline:
 				return
 			
-		if checkTrue_A == True:
+		if checkTrue_A == ufo_color:
 			if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and x == thing_A_startx:
 				thing_A_starty, thing_A_startx, word_A = check_eat(thing_A_startx, thing_A_starty, thing_starty, channel1)
 			elif thing_A_starty > deadline:
 				return
 			
-		if checkTrue_B == True:
+		if checkTrue_B == ufo_color:
 			if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and x == thing_B_startx:
 				thing_B_starty, thing_B_startx, word_B = check_eat(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
 			elif thing_B_starty > deadline:
 				return
 			
-		if checkTrue_C == True:
+		if checkTrue_C == ufo_color:
 			if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and x == thing_C_startx:
 				thing_C_starty, thing_C_startx, word_C = check_eat(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
 			elif thing_C_starty > deadline:
 				return
 			
-		if checkTrue_D == True:
+		if checkTrue_D == ufo_color:
 			if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and x == thing_D_startx:
 				thing_D_starty, thing_D_startx, word_D = check_eat(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
 			elif thing_D_starty > deadline:
@@ -602,23 +616,23 @@ def runGame2():
 			his_high_user = user
 
 		#check crash
-		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue == False:
+		if (y < (thing_starty) and y + car_height >= thing_starty) and checkTrue != ufo_color:
 			if x == thing_startx:
 				return #吃到錯誤的GAMOVER
 				
-		if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and checkTrue_A == False:
+		if (y < (thing_A_starty) and y + car_height >= thing_A_starty) and checkTrue_A != ufo_color:
 			if x == thing_A_startx:
 				return #吃到錯誤的GAMOVER
     
-		if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and checkTrue_B == False:
+		if (y < (thing_B_starty) and y + car_height >= thing_B_starty) and checkTrue_B != ufo_color:
 			if x == thing_B_startx:
 				return #吃到錯誤的GAMOVER
 		        
-		if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and checkTrue_C == False:
+		if (y < (thing_C_starty) and y + car_height >= thing_C_starty) and checkTrue_C != ufo_color:
 			if x == thing_C_startx:
 				return #吃到錯誤的GAMOVER
 				
-		if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and checkTrue_D == False:
+		if (y < (thing_D_starty) and y + car_height >= thing_D_starty) and checkTrue_D != ufo_color:
 			if x == thing_D_startx:
 				return #吃到錯誤的GAMOVER
 		

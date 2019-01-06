@@ -192,6 +192,7 @@ def make_next_things(thing_starty1, thing_starty2, display_height):
 def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
 	global score
 	channel1.play(pygame.mixer.Sound("eat.wav"))
+	
 	thing_startx += 10000
 	score += 100
 	pygame.display.update()

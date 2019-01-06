@@ -121,7 +121,7 @@ def break_record2():
 		else:
 			his_list2[2] = [3,user,score2]
 
-	with open('his_high1.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
+	with open('his_high2.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
 		# 建立 CSV 檔寫入器
 		writer = csv.writer(csvfile)
 
@@ -159,9 +159,6 @@ planet_width = 135
 
 #設定icon
 pygame.display.set_icon(menu_UFO)
-
-#設定星球間隔
-PlanetRange = 600
 
 #設定跑道x軸大小
 runway = [display_width/6 - planet_width/2 , display_width/6 * 3 - planet_width/2, display_width/6 * 5 - planet_width/2]
@@ -240,17 +237,14 @@ def car(x, y , score):
 
 def car2(x, y , score2, ufo):
 	global his_high_score2
-	if score2 >= his_high_score2:
-		gameDisplay.blit(carImg2, (x,y))
-	else:
-		gameDisplay.blit(ufo, (x,y))
+	gameDisplay.blit(ufo, (x,y))
 	
 #產生下個東西
 def random_things(planet_height, PlanetRange):
 	planet = random.choice(Picture2)
 	thing_starty = 0 - planet_height - PlanetRange
-	thing_startx = display_width/6 * 3 - planet_width/2
-	return thing_startx,thing_starty, planet
+	thing_startx = display_width/2 - planet_width/2 - 10
+	return thing_startx, thing_starty, planet
 		
 #設定障礙物
 def set_things(planet_height, PlanetRange):
@@ -308,7 +302,7 @@ def check_eat2(thing_startx, thing_starty, thing_D_starty, channel1):
 	score2 += 100
 	pygame.display.update()
 	thing_starty = thing_D_starty - PlanetRange
-	thing_startx = display_width/6 * 3 - planet_width/2
+	thing_startx = display_width/6 * 3 - planet_width/2 - 10
 	word = random.choice(Picture2)
 	return thing_starty, thing_startx, word
 #=========================================================================================	
@@ -369,9 +363,11 @@ def runGame1():
 	#設定初始值
 	thing_speed = 5
 	max_thing_speed = 7
+	PlanetRange = 600
 	
 	
 	#設定障礙物(五個)
+	print(PlanetRange)
 	thing_startx, thing_starty, word = set_things(planet_height, (PlanetRange * 0))
 	thing_A_startx, thing_A_starty, word_A = set_things(planet_height, (PlanetRange * 1))
 	thing_B_startx, thing_B_starty, word_B = set_things(planet_height, (PlanetRange * 2))
@@ -565,9 +561,11 @@ def runGame2():
 	
 	#設定初始值
 	thing_speed = 5
-	max_thing_speed = 7
+	max_thing_speed = 7	
+	PlanetRange = 600
 	
 	#設定障礙物(五個)
+	print(PlanetRange)
 	thing_startx, thing_starty, word = random_things(planet_height, (PlanetRange * 0))
 	thing_A_startx, thing_A_starty, word_A = random_things(planet_height, (PlanetRange * 1))
 	thing_B_startx, thing_B_starty, word_B = random_things(planet_height, (PlanetRange * 2))
@@ -601,10 +599,6 @@ def runGame2():
 				elif event.key == pygame.K_DOWN:
 					ufo = carImg_red
 					ufo_color = "red"
-
-			# if event.type == pygame.KEYUP:
-				# if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-					# x_change = 0
 		
 		#檢查要吃與否
 		checkTrue = check_correct2(word)
@@ -632,7 +626,6 @@ def runGame2():
 		gameDisplay.blit(highscoreSurf, highscoreRect)
 		
 		#依分數增加速度
-		print(score2)
 		if score2 < 300:
 			PlanetRange = 500
 			thing_speed = 5 #用來加速 

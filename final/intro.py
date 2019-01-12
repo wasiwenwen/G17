@@ -5,10 +5,8 @@ import sys
 from pygame.locals import *  
 
 pygame.init()
-pygame.mixer.init()
 # =============================================================================
 # 基礎設定
-
 # 視窗大小設定
 display_width   = 600
 display_height  = 600
@@ -32,7 +30,6 @@ file1 = 'his_high1.csv'
 file2 = 'his_high2.csv'
 
 # =============================================================================
-
 def intro():
     '''首頁'''
     # 首頁按鈕配置

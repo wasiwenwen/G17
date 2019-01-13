@@ -12,11 +12,14 @@ user = ""
 score = 0
 score2 = 0
 
+# 檔案輸入
+file1 = 'his_high1.csv'
+file2 = 'his_high2.csv'
 # =====================================================
 # 歷史紀錄
-def his_high(): #紀錄目前最高分
+def HisHighShowInGame(file): #紀錄目前最高分，呈現在主遊戲畫面
 	import csv
-	fh1 = open('his_high1.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
 	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
 	list = []
@@ -24,43 +27,34 @@ def his_high(): #紀錄目前最高分
 		tuple = (aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip())
 		list.append(tuple)
 
-	his_high = list[0][2]
+	his_highNO1 = list[0][2]
 	fh1.close()
-	return int(his_high)
-
-
-def his_high_3(): #紀錄前三高分
+	return int(his_highNO1)
+def break_record(file , s , user):
 	import csv
-	fh1 = open('his_high1.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+	fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
 	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
-
-	list = []
+	his_list = []
 	for aline in csv1:
 		list1 = [aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip()]
-		list.append(list1)
-	his_high = (list[0][1],list[0][2])
+		his_list.append(list1)
 	fh1.close()
-	return list
 
-
-def break_record():
-	global score,user
-	import csv
-	if score > int(his_list[2][2]):
-		if score > int(his_list[1][2]):
-			if score > int(his_list[0][2]):
+	if s > int(his_list[2][2]):
+		if s > int(his_list[1][2]):
+			if s > int(his_list[0][2]):
 				his_list[2] = [3,his_list[1][1],his_list[1][2]]
 				his_list[1] = [2,his_list[0][1],his_list[0][2]]
-				his_list[0] = [1,user,score]
+				his_list[0] = [1,user,s]
 			else:
 				his_list[2] = [3,his_list[1][1],his_list[1][2]]
-				his_list[1] = [2,user,score]
+				his_list[1] = [2,user,s]
 				
 		else:
-			his_list[2] = [3,user,score]
+			his_list[2] = [3,user,s]
 
-	with open('his_high1.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
+	with open(file, 'w', newline='', encoding = 'utf-8') as csvfile:
 		# 建立 CSV 檔寫入器
 		writer = csv.writer(csvfile)
 
@@ -72,67 +66,6 @@ def break_record():
 		writer.writerow(his_list[1])
 		writer.writerow(his_list[2])
 	csvfile.close()
-
-# ----------------------------------------------
-# 歷史紀錄2
-def his_high2(): #紀錄目前最高分
-	import csv
-	fh1 = open('his_high2.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
-	csv1 = csv.DictReader(fh1) 
-	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
-	list = []
-	for aline in csv1:
-		tuple = (aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip())
-		list.append(tuple)
-
-	his_high = list[0][2]
-	fh1.close()
-	return int(his_high)
-
-
-def his_high_32(): #紀錄前三高分
-	import csv
-	fh1 = open('his_high2.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
-	csv1 = csv.DictReader(fh1) 
-	cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
-
-	list = []
-	for aline in csv1:
-		list1 = [aline[cname1[0]].strip() , aline[cname1[1]].strip(), aline[cname1[2]].strip()]
-		list.append(list1)
-	his_high = (list[0][1],list[0][2])
-	fh1.close()
-	return list
-
-
-def break_record2():
-	global score2,user
-	import csv
-	if score2 > int(his_list2[2][2]):
-		if score2 > int(his_list2[1][2]):
-			if score2 > int(his_list2[0][2]):
-				his_list2[2] = [3,his_list2[1][1],his_list2[1][2]]
-				his_list2[1] = [2,his_list2[0][1],his_list2[0][2]]
-				his_list2[0] = [1,user,score2]
-			else:
-				his_list2[2] = [3,his_list2[1][1],his_list2[1][2]]
-				his_list2[1] = [2,user,score2]
-				
-		else:
-			his_list2[2] = [3,user,score2]
-
-	with open('his_high2.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
-		# 建立 CSV 檔寫入器
-		writer = csv.writer(csvfile)
-
-		# 寫入一列資料
-		writer.writerow(['#', 'user', 'score'])
-
-		# 寫入另外幾列資料
-		writer.writerow(his_list2[0])
-		writer.writerow(his_list2[1])
-		writer.writerow(his_list2[2])
-	csvfile.close()	
 # =====================================================
 #基本設定
 
@@ -199,10 +132,10 @@ for i in yellow:
 
 
 #最高分與排行榜
-his_high_score = his_high()
-his_list = his_high_3()
-his_high_score2 = his_high2()
-his_list2 = his_high_32()
+his_high_score = HisHighShowInGame(file1)
+# his_list = his_high_3()
+his_high_score2 = HisHighShowInGame(file2)
+# his_list2 = his_high_32()
 #======================================================================
 
 #建立障礙物
@@ -307,7 +240,7 @@ def main():
 			while True:
 				runGame1()
 				pygame.mixer.music.pause()
-				break_record()
+				break_record(file1,score,user)
 				call = showGameOverScreen()
 				if call =='again':
 					pygame.mixer.music.play(-1)
@@ -319,7 +252,7 @@ def main():
 			while True:
 				runGame2()
 				pygame.mixer.music.pause()
-				break_record2()
+				break_record(file2,score2,user)
 				call = showGameOverScreen()
 				if call =='again':
 					pygame.mixer.music.play(-1)

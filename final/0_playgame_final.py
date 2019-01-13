@@ -3,21 +3,11 @@ from intro import *
 from pygame.locals import *  
 from GAMEOVER import *
 from get_user import *
-
-# =====================================================
-# 使用者名稱
-user = ""
-
-# 單一使用者分數
-score = 0
-score2 = 0
-
-# 檔案輸入
-file1 = 'his_high1.csv'
-file2 = 'his_high2.csv'
-# =====================================================
+# ========================================================================================================
+# {fuction}
 # 歷史紀錄
-def HisHighShowInGame(file): #紀錄目前最高分，呈現在主遊戲畫面
+def HisHighShowInGame(file): 
+	'''紀錄目前最高分，呈現在主遊戲畫面'''
 	import csv
 	fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
@@ -30,7 +20,9 @@ def HisHighShowInGame(file): #紀錄目前最高分，呈現在主遊戲畫面
 	his_highNO1 = list[0][2]
 	fh1.close()
 	return int(his_highNO1)
+	
 def break_record(file , s , user):
+	'''歷史紀錄更新'''
 	import csv
 	fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
 	csv1 = csv.DictReader(fh1) 
@@ -66,8 +58,101 @@ def break_record(file , s , user):
 		writer.writerow(his_list[1])
 		writer.writerow(his_list[2])
 	csvfile.close()
+
+def things(thingx, thingy, planet):
+	'''建立障礙物'''
+	gameDisplay.blit(planet, (thingx, thingy))
+
+def ufo(x, y , score): 
+	'''設定UFO位置(for mode1)'''
+	global his_high_score
+	if score >= his_high_score:
+		gameDisplay.blit(ufoImg2, (x,y))
+	else:
+		gameDisplay.blit(ufoImg, (x,y))
+
+def ufo2(x, y , score2, ufo):
+	'''設定UFO位置(for mode2)'''
+	gameDisplay.blit(ufo, (x,y))
+	
+def set_things(planet_height, PlanetRange, mode):
+	'''設定障礙物(隨機產生)'''
+	global Picture, Picture2
+	if mode == 1:
+		thing_startx = random.choice(runway)
+		thing_starty = 0 - planet_height - PlanetRange
+		planet = random.choice(Picture)
+		return thing_startx, thing_starty, planet
+	elif mode == 2:
+		planet = random.choice(Picture2)
+		thing_starty = 0 - planet_height - PlanetRange
+		thing_startx = display_width/6 * 3 - planet_width/2 - 10
+		return thing_startx, thing_starty, planet
+
+def check_correct(planet1, mode):
+	'''檢查物品要吃與否'''
+	global Picture, Picture2
+	if mode == 1:
+		correct_list = [0, 4, 8, 12, 16, 17, 18, 19]
+		if Picture.index(planet1) in correct_list:
+			return True
+		else:
+			return False
+	elif mode == 2:
+		blue_list = [2, 5, 8, 9, 14]
+		green_list = [0, 4, 7, 11, 12]
+		red_list = [1, 3, 6, 10, 13]
+		if Picture2.index(planet1) in blue_list:
+			return "blue"
+		elif Picture2.index(planet1) in green_list: 
+			return "green"
+		elif Picture2.index(planet1) in red_list:
+			return "red"
+		
+def make_next_things(thing_starty1, thing_starty2, display_height):
+	'''產生下個東西'''
+	global PlanetRange
+	thing_starty1 = thing_starty2 - PlanetRange
+	thing_startx1 = random.choice(runway)
+	planet_next = random.choice(Picture)
+	return thing_startx1, thing_starty1, planet_next
+
+def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
+	'''吃到東西加分後重新生成新的(for mode1)'''
+	global score
+	channel1.play(pygame.mixer.Sound("eat.wav"))
+	thing_startx += 10000
+	score += 100
+	pygame.display.update()
+	thing_starty = thing_D_starty - PlanetRange 
+	thing_startx = random.choice(runway)
+	planet = random.choice(Picture)
+	return thing_starty, thing_startx, planet
+
+def check_eat2(thing_startx, thing_starty, thing_D_starty, channel1):
+	'''吃到東西加分後重新生成新的(for mode2)'''
+	global score2
+	channel1.play(pygame.mixer.Sound("eat.wav"))
+	thing_startx += 10000
+	score2 += 100
+	pygame.display.update()
+	thing_starty = thing_D_starty - PlanetRange
+	thing_startx = display_width/6 * 3 - planet_width/2 - 10
+	planet = random.choice(Picture2)
+	return thing_starty, thing_startx, planet
+
 # =====================================================
-#基本設定
+# {基本設定}
+# 使用者名稱
+user = ""
+
+# 單一使用者分數
+score = 0
+score2 = 0
+
+# 檔案輸入
+file1 = 'his_high1.csv'
+file2 = 'his_high2.csv'
 
 #設定視窗大小
 display_width = 600
@@ -130,94 +215,10 @@ Picture2 = Picture.copy()
 for i in yellow:
 	Picture2.remove(i)
 
-
 #最高分與排行榜
 his_high_score = HisHighShowInGame(file1)
-# his_list = his_high_3()
 his_high_score2 = HisHighShowInGame(file2)
-# his_list2 = his_high_32()
-#======================================================================
 
-#建立障礙物
-def things(thingx, thingy, planet):
-	gameDisplay.blit(planet, (thingx, thingy))
-
-#設定UFO位置
-def ufo(x, y , score): #for mode1
-	global his_high_score
-	if score >= his_high_score:
-		gameDisplay.blit(ufoImg2, (x,y))
-	else:
-		gameDisplay.blit(ufoImg, (x,y))
-
-def ufo2(x, y , score2, ufo): #for mode2
-	gameDisplay.blit(ufo, (x,y))
-	
-#設定障礙物(隨機產生)
-def set_things(planet_height, PlanetRange, mode):
-	global Picture, Picture2
-	if mode == 1:
-		thing_startx = random.choice(runway)
-		thing_starty = 0 - planet_height - PlanetRange
-		planet = random.choice(Picture)
-		return thing_startx, thing_starty, planet
-	elif mode == 2:
-		planet = random.choice(Picture2)
-		thing_starty = 0 - planet_height - PlanetRange
-		thing_startx = display_width/6 * 3 - planet_width/2
-		return thing_startx, thing_starty, planet
-
-#檢查物品要吃與否
-def check_correct(planet1, mode):
-	global Picture, Picture2
-	if mode == 1:
-		correct_list = [0, 4, 8, 12, 16, 17, 18, 19]
-		if Picture.index(planet1) in correct_list:
-			return True
-		else:
-			return False
-	elif mode == 2:
-		blue_list = [2, 5, 8, 9, 14]
-		green_list = [0, 4, 7, 11, 12]
-		red_list = [1, 3, 6, 10, 13]
-		if Picture2.index(planet1) in blue_list:
-			return "blue"
-		elif Picture2.index(planet1) in green_list: 
-			return "green"
-		elif Picture2.index(planet1) in red_list:
-			return "red"
-		
-#產生下個東西		
-def make_next_things(thing_starty1, thing_starty2, display_height):
-	global PlanetRange
-	thing_starty1 = thing_starty2 - PlanetRange
-	thing_startx1 = random.choice(runway)
-	planet_next = random.choice(Picture)
-	return thing_startx1, thing_starty1, planet_next
-
-#吃到東西加分後重新生成新的	for mode1
-def check_eat(thing_startx, thing_starty, thing_D_starty, channel1):
-	global score
-	channel1.play(pygame.mixer.Sound("eat.wav"))
-	thing_startx += 10000
-	score += 100
-	pygame.display.update()
-	thing_starty = thing_D_starty - PlanetRange 
-	thing_startx = random.choice(runway)
-	planet = random.choice(Picture)
-	return thing_starty, thing_startx, planet
-
-#吃到東西加分後重新生成新的	for mode2	
-def check_eat2(thing_startx, thing_starty, thing_D_starty, channel1): 
-	global score2
-	channel1.play(pygame.mixer.Sound("eat.wav"))
-	thing_startx += 10000
-	score2 += 100
-	pygame.display.update()
-	thing_starty = thing_D_starty - PlanetRange
-	thing_startx = display_width/6 * 3 - planet_width/2 - 10
-	planet = random.choice(Picture2)
-	return thing_starty, thing_startx, planet
 #=========================================================================================	
 def main():  
 	global speedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score, his_high_score2, score2
@@ -599,14 +600,14 @@ def runGame2():
 			
 		if bg_y2 >= display_height:
 			bg_y2 = - display_height
-		pygame.display.update() #pygame.display.flip()也可以
+		pygame.display.update() 
 		
-				
 		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
 		speedCLOCK.tick(50)
 		pygame.display.update()
-	
-#啟動主遊戲迴圈        
+
+#=================================================================	
+#{啟動遊戲}       
 if __name__ == '__main__':  
 	try:  
 		main()  

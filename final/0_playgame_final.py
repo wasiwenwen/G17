@@ -209,53 +209,51 @@ his_list2 = his_high_32()
 def things(thingx, thingy, planet):
 	gameDisplay.blit(planet, (thingx, thingy))
 
-	
 #設定UFO位置
-def ufo(x, y , score):
+def ufo(x, y , score): #for mode1
 	global his_high_score
 	if score >= his_high_score:
 		gameDisplay.blit(ufoImg2, (x,y))
 	else:
 		gameDisplay.blit(ufoImg, (x,y))
 
-def ufo2(x, y , score2, ufo):
+def ufo2(x, y , score2, ufo): #for mode2
 	gameDisplay.blit(ufo, (x,y))
 	
-#產生隨機產生東西
-def random_things(planet_height, PlanetRange):
-	planet = random.choice(Picture2)
-	thing_starty = 0 - planet_height - PlanetRange
-	thing_startx = display_width/2 - planet_width/2 - 10
-	return thing_startx, thing_starty, planet
+#設定障礙物(隨機產生)
+def set_things(planet_height, PlanetRange, mode):
+	global Picture, Picture2
+	if mode == 1:
+		thing_startx = random.choice(runway)
+		thing_starty = 0 - planet_height - PlanetRange
+		planet = random.choice(Picture)
+		return thing_startx, thing_starty, planet
+	elif mode == 2:
+		planet = random.choice(Picture2)
+		thing_starty = 0 - planet_height - PlanetRange
+		thing_startx = display_width/6 * 3 - planet_width/2
+		return thing_startx, thing_starty, planet
+
+#檢查物品要吃與否
+def check_correct(planet1, mode):
+	global Picture, Picture2
+	if mode == 1:
+		correct_list = [0, 4, 8, 12, 16, 17, 18, 19]
+		if Picture.index(planet1) in correct_list:
+			return True
+		else:
+			return False
+	elif mode == 2:
+		blue_list = [2, 5, 8, 9, 14]
+		green_list = [0, 4, 7, 11, 12]
+		red_list = [1, 3, 6, 10, 13]
+		if Picture2.index(planet1) in blue_list:
+			return "blue"
+		elif Picture2.index(planet1) in green_list: 
+			return "green"
+		elif Picture2.index(planet1) in red_list:
+			return "red"
 		
-#設定障礙物
-def set_things(planet_height, PlanetRange):
-	thing_startx = random.choice(runway) #X座標從跑道中任選一條
-	thing_starty = 0 - planet_height - PlanetRange #因為如果從零開始的話，0會出現在畫面上
-	planet2 = random.choice(Picture)
-	return thing_startx, thing_starty, planet2
-
-#檢查物品要吃與否 for mode1
-def check_correct(planet1):
-	global Picture
-	if (Picture.index(planet1) == 0) or (Picture.index(planet1) == 4) or (Picture.index(planet1) == 8) or (Picture.index(planet1) == 12) or (16 <=(Picture.index(planet1)) <= 19):
-		return True
-	else:
-		return False
-
-#檢查物品要吃與否 for mode2
-def check_correct2(planet1):
-	global Picture2
-	blue_list = [2, 5, 8, 9, 14]
-	green_list = [0, 4, 7, 11, 12]
-	red_list = [1, 3, 6, 10, 13]
-	if Picture2.index(planet1) in blue_list:
-		return "blue"
-	elif Picture2.index(planet1) in green_list:
-		return "green"
-	elif Picture2.index(planet1) in red_list:
-		return "red"
-
 #產生下個東西		
 def make_next_things(thing_starty1, thing_starty2, display_height):
 	global PlanetRange
@@ -334,27 +332,25 @@ def main():
 #主遊戲迴圈
 def runGame1():
 	global his_high_score, score, PlanetRange
-	x = (display_width/2 - ufo_width/2) #一開始設計在畫面正中央
+	#設定模式
+	mode = 1
+	#設定ufo起始位置(畫面正中央)
+	x = (display_width/2 - ufo_width/2)
 	y = (display_height * 0.8)
-	
+	#設定音樂
 	channel1 = pygame.mixer.Channel(0)
 	#設定分數
 	score = 0
-
 	#設定初始值
 	thing_speed = 7
-	max_thing_speed = 7
 	PlanetRange = 500
-	
-	
 	#設定障礙物(五個)
-	thing_startx, thing_starty, planet = set_things(planet_height, (PlanetRange * 0))
-	thing_A_startx, thing_A_starty, planet_A = set_things(planet_height, (PlanetRange * 1))
-	thing_B_startx, thing_B_starty, planet_B = set_things(planet_height, (PlanetRange * 2))
-	thing_C_startx, thing_C_starty, planet_C = set_things(planet_height, (PlanetRange * 3))
-	thing_D_startx, thing_D_starty, planet_D = set_things(planet_height, (PlanetRange * 4))
+	thing_startx, thing_starty, planet = set_things(planet_height, (PlanetRange * 0), mode)
+	thing_A_startx, thing_A_starty, planet_A = set_things(planet_height, (PlanetRange * 1), mode)
+	thing_B_startx, thing_B_starty, planet_B = set_things(planet_height, (PlanetRange * 2), mode)
+	thing_C_startx, thing_C_starty, planet_C = set_things(planet_height, (PlanetRange * 3), mode)
+	thing_D_startx, thing_D_starty, planet_D = set_things(planet_height, (PlanetRange * 4), mode)
 	
-
 	# 讓背景動起來(1/2) - 設定背景的位置參數初始值
 	bg_speed = 3
 	bg_x1, bg_x2 = 0, 0
@@ -376,11 +372,11 @@ def runGame1():
 					x += display_width/3
 			
 		#檢查要吃與否
-		checkTrue = check_correct(planet)
-		checkTrue_A = check_correct(planet_A)
-		checkTrue_B = check_correct(planet_B)
-		checkTrue_C = check_correct(planet_C)
-		checkTrue_D = check_correct(planet_D)
+		checkTrue = check_correct(planet, mode)
+		checkTrue_A = check_correct(planet_A, mode)
+		checkTrue_B = check_correct(planet_B, mode)
+		checkTrue_C = check_correct(planet_C, mode)
+		checkTrue_D = check_correct(planet_D, mode)
 
 		#設定背景顏色，需特別注意，此條為將螢幕刷成同一顏色，若物件的函數寫在這之前，就會被刷成同一顏色而無法辨認
 		gameDisplay.fill(black)
@@ -523,27 +519,27 @@ def runGame1():
 
 def runGame2():
 	global his_high_score2, score2, PlanetRange, planet_height
-	x = (display_width/2 - ufo_width2/2) #一開始設計在畫面正中央
+	#設定模式
+	mode = 2
+	#設定ufo的起始位置(畫面正中央)
+	x = (display_width/2 - ufo_width2/2) 
 	y = (display_height * 0.8)
-	
+	#設定音樂
 	channel1 = pygame.mixer.Channel(0)
 	#設定分數
 	score2 = 0
 	#設定一開始的ufo
 	ufo = ufoImg_blue
 	ufo_color = "blue"
-	
-	#設定初始值
+	#設定速度與間距初始值
 	thing_speed = 5
 	PlanetRange = 500
-	
 	#設定障礙物(五個)
-	thing_startx, thing_starty, planet = random_things(planet_height, (PlanetRange * 0))
-	thing_A_startx, thing_A_starty, planet_A = random_things(planet_height, (PlanetRange * 1))
-	thing_B_startx, thing_B_starty, planet_B = random_things(planet_height, (PlanetRange * 2))
-	thing_C_startx, thing_C_starty, planet_C = random_things(planet_height, (PlanetRange * 3))
-	thing_D_startx, thing_D_starty, planet_D = random_things(planet_height, (PlanetRange * 4))
-	
+	thing_startx, thing_starty, planet = set_things(planet_height, (PlanetRange * 0), mode)
+	thing_A_startx, thing_A_starty, planet_A = set_things(planet_height, (PlanetRange * 1), mode)
+	thing_B_startx, thing_B_starty, planet_B = set_things(planet_height, (PlanetRange * 2), mode)
+	thing_C_startx, thing_C_starty, planet_C = set_things(planet_height, (PlanetRange * 3), mode)
+	thing_D_startx, thing_D_starty, planet_D = set_things(planet_height, (PlanetRange * 4), mode)
 	
 	# 讓背景動起來(1/2) - 設定背景的位置參數初始值
 	bg_speed = 3
@@ -571,11 +567,11 @@ def runGame2():
 					ufo_color = "red"
 		
 		#檢查要吃與否
-		checkTrue = check_correct2(planet)
-		checkTrue_A = check_correct2(planet_A)
-		checkTrue_B = check_correct2(planet_B)
-		checkTrue_C = check_correct2(planet_C)
-		checkTrue_D = check_correct2(planet_D)
+		checkTrue = check_correct(planet, mode)
+		checkTrue_A = check_correct(planet_A, mode)
+		checkTrue_B = check_correct(planet_B, mode)
+		checkTrue_C = check_correct(planet_C, mode)
+		checkTrue_D = check_correct(planet_D, mode)
 
 		#設定背景顏色
 		gameDisplay.fill(black)
@@ -604,12 +600,10 @@ def runGame2():
 			PlanetRange = 350
 			thing_speed = 7.5
 
-			
 		elif 500 <= score2 < 1000:
 			PlanetRange = 300
 			thing_speed = 8
 
-			
 		elif score2 >= 1000:
 			PlanetRange = 200
 			thing_speed = 8.5 

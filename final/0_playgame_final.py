@@ -60,7 +60,7 @@ def break_record():
 		else:
 			his_list[2] = [3,user,score]
 
-	with open('his_high.csv1', 'w', newline='', encoding = 'utf-8') as csvfile:
+	with open('his_high1.csv', 'w', newline='', encoding = 'utf-8') as csvfile:
 		# 建立 CSV 檔寫入器
 		writer = csv.writer(csvfile)
 
@@ -173,37 +173,22 @@ ufoImg_red = pygame.image.load("ufo_r.png")
 #讀入星球圖片
 Picture = [] #for mode1
 g0 = pygame.image.load("g0.png")
-Picture.append(g0)
 g1 = pygame.image.load("g1.png")
-Picture.append(g1)
 g2 = pygame.image.load("g2.png")
-Picture.append(g2)
 g3 = pygame.image.load("g3.png")
-Picture.append(g3)
 r0 = pygame.image.load("r0.png")
-Picture.append(r0)
 r1 = pygame.image.load("r1.png")
-Picture.append(r1)
 r2 = pygame.image.load("r2.png")
-Picture.append(r2)
 r3 = pygame.image.load("r3.png")
-Picture.append(r3)
 y0 = pygame.image.load("y0.png")
-Picture.append(y0)
 y1 = pygame.image.load("y1.png")
-Picture.append(y1)
 y2 = pygame.image.load("y2.png")
-Picture.append(y2)
 y3 = pygame.image.load("y3.png")
-Picture.append(y3)
 b0 = pygame.image.load("b0.png")
-Picture.append(b0)
 b1 = pygame.image.load("b1.png")
-Picture.append(b1)
 b2 = pygame.image.load("b2.png")
-Picture.append(b2)
 b3 = pygame.image.load("b3.png")
-Picture.append(b3)
+Picture.extend([g0, g1, g2, g3, r0, r1, r2, r3, y0, y1, y2, y3, b0, b1, b2, b3])
 #增加正確星球的出現機率
 Picture.extend([g0, r0, y0, b0])
 #for mode2
@@ -234,10 +219,9 @@ def ufo(x, y , score):
 		gameDisplay.blit(ufoImg, (x,y))
 
 def ufo2(x, y , score2, ufo):
-	global his_high_score2
 	gameDisplay.blit(ufo, (x,y))
 	
-#產生下個東西
+#產生隨機產生東西
 def random_things(planet_height, PlanetRange):
 	planet = random.choice(Picture2)
 	thing_starty = 0 - planet_height - PlanetRange
@@ -259,7 +243,7 @@ def check_correct(planet1):
 	else:
 		return False
 
-#檢查物品要吃與否 for hardgame
+#檢查物品要吃與否 for mode2
 def check_correct2(planet1):
 	global Picture2
 	blue_list = [2, 5, 8, 9, 14]
@@ -305,10 +289,10 @@ def check_eat2(thing_startx, thing_starty, thing_D_starty, channel1):
 	return thing_starty, thing_startx, planet
 #=========================================================================================	
 def main():  
-	global SnakespeedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score, his_high_score2, score2
+	global speedCLOCK, gameDisplay, BASICFONT, user, his_high_score, score, his_high_score2, score2
 
 	pygame.init()  
-	SnakespeedCLOCK = pygame.time.Clock()  
+	speedCLOCK = pygame.time.Clock()  
 	gameDisplay = pygame.display.set_mode((display_height, display_width))
 	BASICFONT = pygame.font.Font('freesansbold.ttf', 18) 
 	pygame.display.set_caption('Stroop UFO')
@@ -533,7 +517,7 @@ def runGame1():
 		
 				
 		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
-		SnakespeedCLOCK.tick(50)
+		speedCLOCK.tick(50)
 		pygame.display.update()
 
 
@@ -649,21 +633,16 @@ def runGame2():
 		deadline = display_height - ufo_height
 		if checkTrue == ufo_color:
 			if (y < (thing_starty) and y + ufo_height >= thing_starty):
-				thing_starty, thing_startx, planet = check_eat2(thing_startx, thing_starty, thing_D_starty, channel1)
-			
+				thing_starty, thing_startx, planet = check_eat2(thing_startx, thing_starty, thing_D_starty, channel1)	
 		if checkTrue_A == ufo_color:
 			if (y < (thing_A_starty) and y + ufo_height >= thing_A_starty):
 				thing_A_starty, thing_A_startx, planet_A = check_eat2(thing_A_startx, thing_A_starty, thing_starty, channel1)
-
-			
 		if checkTrue_B == ufo_color:
 			if (y < (thing_B_starty) and y + ufo_height >= thing_B_starty):
 				thing_B_starty, thing_B_startx, planet_B = check_eat2(thing_B_startx, thing_B_starty, thing_A_starty, channel1)
-			
 		if checkTrue_C == ufo_color:
 			if (y < (thing_C_starty) and y + ufo_height >= thing_C_starty):
 				thing_C_starty, thing_C_startx, planet_C = check_eat2(thing_C_startx, thing_C_starty, thing_B_starty, channel1)
-			
 		if checkTrue_D == ufo_color:
 			if (y < (thing_D_starty) and y + ufo_height >= thing_D_starty):
 				thing_D_starty, thing_D_startx, planet_D = check_eat2(thing_D_startx, thing_D_starty, thing_C_starty, channel1)
@@ -697,7 +676,7 @@ def runGame2():
 		
 				
 		#設定每秒多少動畫窗格。若要有增加速度的感覺，可以增加數字
-		SnakespeedCLOCK.tick(50)
+		speedCLOCK.tick(50)
 		pygame.display.update()
 	
 #啟動主遊戲迴圈        
